@@ -1,0 +1,43 @@
+# Reproduces the "out13" build ("Generous") from out10's raw table. Golden sha256 of the pak:
+# 0c9142bac9dd78cb9e8ab539729351d22d28564971510d5ede6a141ab301cda4 (size 290324).
+# Relative paths resolve against [lootpak] modwork in config.toml.
+[meta]
+name  = "out13-generous"
+notes = "Chump/Normal/Elite drop odds up, Elite rarity_modifier = Elite+. Value retargets only."
+
+[base]
+raw           = "out10/work/t0_v7.raw"
+inventory     = "out10/in/inv/Engine/Content/_NCS/Nexus-Data-inventory_container0.ncs"
+reference_pak = "out3/pakchunk100-ps5_P.pak"
+
+[enemydrops.Chump]
+classmods_probability         = 0.15
+enhancements_probability      = 0.15
+repkits_probability           = 0.15
+grenadesorgadgets_probability = 0.15
+shields_probability           = 0.15
+guns_probability              = 0.25
+
+[enemydrops.Normal]
+classmods_probability         = 0.15
+enhancements_probability      = 0.15
+repkits_probability           = 0.15
+grenadesorgadgets_probability = 0.15
+shields_probability           = 0.15
+guns_probability              = 0.25
+
+[enemydrops.Elite]
+classmods_probability         = 0.20
+enhancements_probability      = 0.20
+repkits_probability           = 0.20
+grenadesorgadgets_probability = 0.20
+shields_probability           = 0.20
+guns_probability              = 0.40
+
+[enemydrops.Elite.rarity_modifier]
+commonmodifier    = 0.7
+uncommonmodifier  = 7
+raremodifier      = 25
+veryraremodifier  = 15
+legendarymodifier = 9
+pearlmodifier     = 8

@@ -1,0 +1,32 @@
+# Copy to config.toml (git-ignored) and edit. Every key is optional.
+# Never commit your config.toml: it can hold a save key and the paths of programs that get run.
+
+[forge]
+data_dir  = "data"        # where bl4-serial-matches.json and manifest/ live (YOU supply them; none are shipped)
+level     = 60            # default item level for builds
+character = "gravitar"    # default vault hunter for class-mod searches
+
+[ownership]
+# Content packs you own. Items needing anything outside this list are never generated.
+packs = [
+  "coregame",
+  "bounty_pack_1", "bounty_pack_2", "bounty_pack_3", "bounty_pack_4",
+  "bounty_pack_5",
+]
+
+[save]
+# Save-file keys. Keep real values only in config.toml, never in source, tests, or an issue report.
+# ps5_key: the 32-byte AES-256 key of the PS5 game layer, as 64 hex digits. This project does NOT ship it
+#          and does not say how to find it; you must obtain it yourself. Leave empty to disable PS5 saves.
+# pc_base_key: needed only for PC saves (the PC key is derived from it and your Steam ID).
+ps5_key     = ""
+pc_base_key = ""
+
+[lootpak]
+# Optional loot-pak builder. It RUNS the external programs named here (see docs/runbooks/DEVELOPER.md).
+# Point these only at tools you built or trust. Leave empty if you do not use `lootpak-*`.
+ncstool  = ""    # full path of your ncstool build
+bl4      = ""    # full path of the upstream bl4 command line tool
+uextract = ""    # full path of the upstream uextract tool
+modwork  = ""    # folder that relative paths in a loot-pak config resolve against
+# protected_dirs = "/some/folder;/another"   # extra folders the builder must never write into

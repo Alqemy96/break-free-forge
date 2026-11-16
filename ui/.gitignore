@@ -1,0 +1,7 @@
+node_modules/
+dist-mock/
+*.local
+.vite/
+coverage/
+.mock-bundle.tgz
+.e2e-bundle.tgz

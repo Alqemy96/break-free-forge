@@ -1,0 +1,28 @@
+BL4 Forge - credits and third-party notices
+
+This project is licensed under AGPL-3.0-only (see LICENSE and LICENSING.md).
+
+Upstream work this project is built on or interoperates with:
+
+1. Nicnl/borderlands4-serials - https://github.com/Nicnl/borderlands4-serials
+   License: AGPL-3.0.
+   The item-serial codec in src/bl4forge/modules/codec/ is a Python port of the logic of this project (via an
+   earlier Python port). It is the reason the whole tree is AGPL-3.0. Thank you to its author.
+
+2. monokrome/bl4 - Borderlands 4 reverse engineering toolkit (Rust)
+   License: BSD-2-Clause. Copyright (c) 2025 bl4 Contributors.
+   Used as a reference for the PC save container layout (interoperability) and for the serial and part
+   conventions; the optional loot-pak builder is designed to drive that toolkit's `bl4` and `uextract`
+   command line programs (and its NCS parser crate `bl4-ncs` through a separate helper). No source from it is
+   copied into this tree. The BSD-2-Clause notice requires reproducing its copyright notice and disclaimer
+   in redistributions of that code; if you redistribute any of it, follow that license.
+
+3. FIPS-197 (AES) known-answer test vectors - used in src/bl4forge/modules/save/_aes.py as a self-check. The
+   AES implementation itself is written from the public standard.
+
+4. User-interface dependencies (React, Vite, Tailwind CSS, zustand, motion, lucide-react, the @fontsource
+   packages for Barlow, Barlow Condensed and JetBrains Mono, and others) are listed in ui/package.json and are
+   fetched by npm when you build the UI. Each is under its own license (MIT / OFL / ISC and similar). None of
+   their code or font files is committed here.
+
+Borderlands is a trademark of Gearbox Software / 2K. This is an unofficial fan tool.

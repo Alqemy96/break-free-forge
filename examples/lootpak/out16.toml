@@ -1,0 +1,30 @@
+# Solo enemy-count step 0 (BL4 PS5), on top of out14. Not a recorded build: no golden sha, nothing installed.
+# Table_PlayerCountSpawnBalanceData: each row's oneplayer constant is set to that row's threeplayers constant
+# (read from out14/decoded_t0_v11.txt), and Default's oneplayer to 2. Only oneplayer.constant is editable;
+# the twoplayers/threeplayers/fourplayers columns are not touched. Values are strings already in the pool.
+[meta]
+name  = "out16"
+notes = "Solo play: oneplayer spawn constant = the row's threeplayers constant; Default = 2. Co-op untouched."
+
+[base]
+raw           = "out14/work/t0_v11.raw"
+inventory     = "out14/in/inv/Engine/Content/_NCS/Nexus-Data-inventory_container0.ncs"
+reference_pak = "out3/pakchunk100-ps5_P.pak"
+
+[spawnbalance.Default]
+oneplayer_constant = 2.0
+
+[spawnbalance."2P+_add1"]
+oneplayer_constant = 1.0
+
+[spawnbalance."2P+_add1_&_4P_add2"]
+oneplayer_constant = 1.0
+
+[spawnbalance."2P+_add2_&_4P_add3"]
+oneplayer_constant = 2.0
+
+[spawnbalance."3P+_add1"]
+oneplayer_constant = 1.0
+
+[spawnbalance.add1_per_additional_player]
+oneplayer_constant = 2.0
