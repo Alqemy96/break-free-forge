@@ -3,10 +3,12 @@ import { Reorder, useDragControls } from 'motion/react'
 import { useId, useState, type CSSProperties } from 'react'
 import { CopyButton } from '@/components/fx/copy-button'
 import { ElementIcon } from '@/components/item/badges'
+import { ItemIcon } from '@/components/item/ItemIcon'
 import { SerialText } from '@/components/item/serial'
 import { elementColor, rarityColor } from '@/components/item/tokens'
 import { Input, Textarea } from '@/components/ui/input'
 import { elementKey, elementLabel, rarityKey } from '@/lib/format'
+import { iconKindOf } from '@/lib/itemKind'
 import { cn } from '@/lib/utils'
 import type { TrayItem } from '@/state/tray'
 import { useTray } from '@/state/trayStore'
@@ -56,9 +58,11 @@ export function TrayItemRow({
           <GripVertical className="size-4" />
         </button>
 
+        <ItemIcon kind={item.icon ?? iconKindOf({ category: item.label })} rarity={item.rarity} marks={false} className="hidden w-[72px] shrink-0 self-start sm:block" />
+
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-1.5">
-            <p className="truncate font-display text-[17px] leading-tight font-semibold tracking-wide text-fg uppercase" title={shown}>
+            <p className="truncate font-display text-[15px] leading-tight tracking-wide text-fg uppercase" title={shown}>
               {shown}
             </p>
             {el ? (

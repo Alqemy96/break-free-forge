@@ -72,7 +72,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="bl4forge", parents=[common], epilog=EPILOG,
         formatter_class=argparse.RawDescriptionHelpFormatter,
-        description="Borderlands 4 loadout forge: search the serial database, identify and modify "
+        description="Break Free Forge (a Borderlands 4 loadout tool): search the serial database, identify and modify "
                     "serials, build code sheets.")
     parser.add_argument("--version", action="version", version="bl4forge " + __version__)
     sub = parser.add_subparsers(dest="cmd", metavar="command", required=True)

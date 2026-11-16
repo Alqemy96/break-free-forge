@@ -5,9 +5,10 @@
  */
 import type { BuildRequest, ElementId, LoadoutRequest } from '@/api/types'
 import { elementKey } from '@/lib/format'
+import { ICON_KINDS, type IconKind } from '@/lib/itemKind'
 
 export const DEFAULT_GROUPS = ['Weapons', 'Gear'] as const
-export const DEFAULT_TITLE = 'Borderlands 4 Loadout'
+export const DEFAULT_TITLE = 'Break Free Loadout'
 
 export interface TrayItem {
   id: string
@@ -20,6 +21,10 @@ export interface TrayItem {
   element: ElementId | null
   level: number | null
   kind: 'weapon' | 'gear'
+  /** silhouette to draw (optional: older saved trays have none) */
+  icon?: IconKind
+  /** maker name, drives the generic maker mark (optional) */
+  maker?: string
   group: string
   /** optional override shown on the sheet; '' = none */
   displayName: string
@@ -233,6 +238,8 @@ export function parseTrayState(raw: unknown): TrayState | null {
       element: typeof it.element === 'string' ? elementKey(it.element) : null,
       level: typeof it.level === 'number' && Number.isFinite(it.level) ? it.level : null,
       kind: it.kind === 'weapon' ? 'weapon' : 'gear',
+      ...(typeof it.icon === 'string' && (ICON_KINDS as readonly string[]).includes(it.icon) ? { icon: it.icon as IconKind } : {}),
+      ...(typeof it.maker === 'string' && it.maker ? { maker: it.maker } : {}),
       group,
       displayName: typeof it.displayName === 'string' ? it.displayName : '',
       note: typeof it.note === 'string' ? it.note : '',

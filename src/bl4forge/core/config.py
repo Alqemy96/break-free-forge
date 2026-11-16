@@ -30,6 +30,26 @@ class Config:
     save_pc_base_key: Optional[bytes] = field(default=None, repr=False)
     # [lootpak]: paths of the external build tools (ncstool, bl4, uextract) and the modwork folder.
     lootpak: Dict[str, str] = field(default_factory=dict)
+    # Where data_dir came from: "env" ($BL4FORGE_DATA), "config" ([forge] data_dir), "real" (data/real or
+    # data/ held your own tables), "synthetic" (nothing of yours was found, so the fictional demo set is used),
+    # or "none" (nothing found and no demo set either).
+    data_source: str = "config"
+
+    @property
+    def is_synthetic(self) -> bool:
+        """True when the active data is the bundled fictional demo set (data/synthetic)."""
+        return self.data_source == "synthetic"
+
+    @property
+    def data_label(self) -> str:
+        """A non-identifying name for the data folder, safe to show in health/doctor output."""
+        if self.data_source == "synthetic":
+            return "data/synthetic (demo set)"
+        try:
+            rel = self.data_dir.resolve().relative_to(self.root.resolve())
+        except (ValueError, OSError):
+            return "<custom data folder>"
+        return rel.as_posix() or "."
 
     @property
     def manifest_dir(self) -> Path:
@@ -56,9 +76,7 @@ class Config:
                 raise ConfigError("cannot read %s: %s" % (cfg_path, ex)) from ex
         forge = raw.get("forge", {})
         own = raw.get("ownership", {})
-        data_dir = Path(forge.get("data_dir", "data"))
-        if not data_dir.is_absolute():
-            data_dir = root_path / data_dir
+        data_dir, data_source = _resolve_data_dir(forge, root_path)
         level = forge.get("level", 60)
         if not isinstance(level, int) or not (1 <= level <= 100):
             raise ConfigError("forge.level must be an integer 1-100, got %r" % (level,))
@@ -73,7 +91,35 @@ class Config:
             raise ConfigError("[lootpak] must be a table of path strings")
         return cls(root=root_path, data_dir=data_dir, level=level,
                    character=str(forge.get("character", "gravitar")), owned_packs=tuple(packs),
-                   save_ps5_key=_hex_key(save, "ps5_key"), save_pc_base_key=_hex_key(save, "pc_base_key"), lootpak=dict(lootpak))
+                   save_ps5_key=_hex_key(save, "ps5_key"), save_pc_base_key=_hex_key(save, "pc_base_key"), lootpak=dict(lootpak),
+                   data_source=data_source)
+
+
+def _has_tables(folder: Path) -> bool:
+    """True when `folder` looks like a data dir: a manifest/ folder or the serial database file."""
+    try:
+        return (folder / "manifest").is_dir() or (folder / "bl4-serial-matches.json").is_file()
+    except OSError:
+        return False
+
+
+def _resolve_data_dir(forge: dict, root: Path) -> Tuple[Path, str]:
+    """Pick the data folder. Order: $BL4FORGE_DATA, then [forge] data_dir (both used exactly as given, never
+    swapped for the demo set), then data/real, then data/ (when they hold tables), else data/synthetic."""
+    env = os.environ.get("BL4FORGE_DATA", "").strip()
+    if env:
+        p = Path(env)
+        return (p if p.is_absolute() else root / p), "env"
+    if "data_dir" in forge:
+        p = Path(forge["data_dir"])
+        return (p if p.is_absolute() else root / p), "config"
+    for sub, label in (("data/real", "real"), ("data", "real")):
+        if _has_tables(root / sub):
+            return root / sub, label
+    synthetic = root / "data" / "synthetic"
+    if synthetic.is_dir():
+        return synthetic, "synthetic"
+    return root / "data", "none"
 
 
 def _hex_key(table: dict, name: str) -> Optional[bytes]:

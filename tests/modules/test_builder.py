@@ -309,7 +309,7 @@ def test_misses_are_unmatched(builder):
     assert len(lo.items) == 1 and lo.items[0].group == "G"
     assert lo.groups == ("G",)                      # a group is kept even when one of its requests missed
     empty = builder.build([], level=60)
-    assert empty == Loadout(title="Borderlands 4 Loadout", level=60)
+    assert empty == Loadout(title="Break Free Loadout", level=60)
     only_miss = builder.build(reqs([{"query": "zz no such item zz"}]))
     assert only_miss.items == () and only_miss.unmatched == ("zz no such item zz",)
 
@@ -598,3 +598,13 @@ def test_two_forges_do_not_interfere(config, mesh):
     b = other.builder.build(reqs([{"serial": KNOWN_SERIAL}]), level=60).items[0]
     a2 = mesh.builder.build(reqs([{"serial": KNOWN_SERIAL}]), level=60).items[0]
     assert a.warnings == () == a2.warnings and b.warnings and a == a2
+
+
+def test_synthetic_probe_constants_match_the_shipped_known_answers(config):
+    """The builder's built-in probe for the demo set must equal data/synthetic/manifest/known_answers.json."""
+    if not config.is_synthetic:
+        pytest.skip("only meaningful on the bundled synthetic dataset")
+    import json
+    from bl4forge.modules.builder import _SYNTHETIC_KNOWN
+    shipped = json.loads((config.manifest_dir / "known_answers.json").read_text(encoding="utf-8"))["builder"]
+    assert {k: shipped[k] for k in _SYNTHETIC_KNOWN} == _SYNTHETIC_KNOWN

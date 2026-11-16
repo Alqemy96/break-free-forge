@@ -1,0 +1,24 @@
+# SYNTHETIC — not game data
+index	name
+1	comp_01_common
+2	comp_02_uncommon
+3	comp_03_rare
+4	comp_04_epic
+5	comp_05_legendary_jailbreaker
+6	comp_05_legendary_opensource
+7	comp_05_legendary_publicdomain
+8	part_body_01
+9	part_body_02
+10	part_body_03
+11	part_barrel_01
+12	part_barrel_02
+13	part_barrel_03
+14	part_barrel_04
+15	part_mag_01
+16	part_mag_02
+17	part_grip_01
+18	part_grip_02
+19	part_scope_01
+20	part_scope_02
+21	part_barrel_pack3
+22	part_barrel_story

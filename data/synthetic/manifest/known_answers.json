@@ -1,0 +1,86 @@
+{
+  "_synthetic": "SYNTHETIC — not game data",
+  "ops": [
+    {
+      "label": "weapon (Breakfree SMG, shock)",
+      "serial": "@Ugt^Dj027QHM3{R8w5UmS>QiG-X;4E400",
+      "category_id": 9103,
+      "level": 50,
+      "rarity": "Legendary",
+      "element": "shock",
+      "legendary_name": "Free Radical",
+      "seed": 631,
+      "other_components": []
+    },
+    {
+      "label": "shield (Breakfree Shield, no element)",
+      "serial": "@Ugt_?9027QHM3_$*6sbjB0s",
+      "category_id": 9201,
+      "level": 50,
+      "rarity": "Legendary",
+      "element": null,
+      "legendary_name": "Safe Harbor",
+      "seed": 3151,
+      "other_components": []
+    },
+    {
+      "label": "pearlescent (Breakfree Pistol, tagged Pearl)",
+      "serial": "@Ugt^Ai027QHM3/2o^r%T~>QiM<X%G",
+      "category_id": 9101,
+      "level": 50,
+      "rarity": "Pearl",
+      "element": "impact",
+      "legendary_name": "Skeleton Key",
+      "seed": 3471,
+      "other_components": []
+    },
+    {
+      "label": "pearlescent + legendary component (highest tier governs)",
+      "serial": "@UggM92027QHM3_$z^r%U7>QiM<XHdh176A",
+      "category_id": 9102,
+      "level": 50,
+      "rarity": "Pearl",
+      "element": "cryo",
+      "legendary_name": "Warranty Void",
+      "seed": 2127,
+      "other_components": [
+        [
+          "Legendary",
+          "Open Vault"
+        ]
+      ]
+    }
+  ],
+  "rules": {
+    "base_serial": "@Ugt^Ai027QHL>P%3w5Uj3Dhz52>I`bg00",
+    "story_serial": "@UggMO7027QHM3@{Aw5Uk6L4`q;L7hPj82/",
+    "story_ref": [
+      9112,
+      22
+    ],
+    "story_pack": "story_pack_1",
+    "bounty_serial": "@Ugt^Ai027QHL>Rdf)Tm0WL4B$WDh+D500",
+    "bounty_ref": [
+      9101,
+      21
+    ],
+    "bounty_pack": "bounty_pack_3",
+    "two_comps_serial": "@Ugt^Dj027QHM3~(fw5UpDDh#R&>I`bgP$B>",
+    "pearl_two_comps_serial": "@UggM92027QHM3_$z^r%U7>QiM<XHdh176A",
+    "kit_serial": "@UggN=q027QHM3^55w5UpDs+3gFj1(#*6$Jn"
+  },
+  "catalog": {
+    "serial": "@UggM92027QHL>Ragw5UjB>Qlpo#-Pq100",
+    "query": "open vault",
+    "type": "shotgun",
+    "element": "cryo"
+  },
+  "builder": {
+    "serial": "@UggM92027QHL>Ragw5UjB>Qlpo#-Pq100",
+    "serial_60": "@UggM92022%!L>Ragw5UjB>Qlpo#-Pq100",
+    "query": "open vault",
+    "type": "shotgun",
+    "name": "Open Vault",
+    "element": "cryo"
+  }
+}

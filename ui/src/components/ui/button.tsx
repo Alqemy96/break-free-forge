@@ -4,8 +4,8 @@ import { cn } from '@/lib/utils'
 
 export const buttonVariants = cva(
   [
-    'relative inline-flex select-none items-center justify-center gap-2 whitespace-nowrap rounded-[3px]',
-    'font-display font-semibold uppercase tracking-[0.06em] transition-[background-color,border-color,color,box-shadow,transform] duration-150 ease-[var(--ease-snap)]',
+    'relative inline-flex select-none items-center justify-center gap-2 whitespace-nowrap rounded-[2px]',
+    'glitch font-display uppercase tracking-[0.05em] transition-[background-color,border-color,color,box-shadow,transform] duration-150 ease-[var(--ease-snap)]',
     'active:translate-y-px disabled:pointer-events-none disabled:opacity-45',
     '[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*=size-])]:size-4',
   ].join(' '),
@@ -13,19 +13,19 @@ export const buttonVariants = cva(
     variants: {
       variant: {
         primary:
-          'bg-hazard text-hazard-ink shadow-[inset_0_1px_0_rgb(255_255_255/0.35),0_0_0_1px_rgb(255_106_19/0.6),0_8px_24px_-10px_rgb(255_106_19/0.7)] hover:bg-hazard-hi',
+          'border-2 border-black bg-hazard text-hazard-ink shadow-[3px_3px_0_var(--color-pink)] hover:bg-hazard-hi hover:text-hazard-ink',
         secondary:
-          'border border-line-strong bg-surface-3 text-fg shadow-[inset_0_1px_0_rgb(255_255_255/0.05)] hover:border-fg-dim hover:bg-surface-4',
+          'border-2 border-line-strong bg-surface-3 text-fg shadow-[3px_3px_0_#000] hover:border-fg-dim hover:bg-surface-4',
         ghost: 'text-fg-muted hover:bg-surface-3 hover:text-fg',
-        outline: 'border border-line-strong bg-transparent text-fg hover:border-hazard hover:text-hazard-hi',
+        outline: 'border-2 border-line-strong bg-transparent text-fg hover:border-hazard hover:text-hazard-hi',
         violet:
-          'border border-violet/70 bg-violet-deep text-violet-hi shadow-[inset_0_1px_0_rgb(255_255_255/0.06)] hover:border-violet-hi hover:text-white',
-        danger: 'border border-danger/50 bg-transparent text-danger hover:bg-danger/10',
+          'border-2 border-black bg-violet text-[#04201d] shadow-[3px_3px_0_var(--color-pink)] hover:bg-violet-hi hover:text-[#04201d]',
+        danger: 'border-2 border-danger/60 bg-transparent text-danger hover:bg-danger/10',
       },
       size: {
-        sm: 'h-8 px-3 text-[13px]',
-        md: 'h-10 px-4 text-[15px]',
-        lg: 'h-12 px-6 text-[17px]',
+        sm: 'h-8 px-3 text-[12.5px]',
+        md: 'h-10 px-4 text-[14px]',
+        lg: 'h-12 px-6 text-[16px]',
         icon: 'size-9 p-0',
         'icon-sm': 'size-8 p-0',
       },

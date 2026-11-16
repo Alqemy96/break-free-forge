@@ -354,6 +354,21 @@ class OpsModule(Module):
             summary = "failed: " + ", ".join(c.name for c in bad)
         return HealthReport.from_checks(checks, summary)
 
+    def _known_rows(self):
+        """The known-answer rows for the ACTIVE dataset: the real-data ones, or the ones that ship with
+        the synthetic demo set (data/synthetic/manifest/known_answers.json)."""
+        try:
+            fn = getattr(self.dep("data"), "known_answers", None)
+            synth = fn() if fn else None
+        except Exception:
+            synth = None
+        rows = synth.get("ops") if synth else None
+        if not rows:
+            return KNOWN
+        return tuple((r["label"], r["serial"], r["category_id"], r["level"], r["rarity"], r["element"],
+                      r["legendary_name"], r["seed"], tuple(tuple(o) for o in r["other_components"]))
+                     for r in rows)
+
     def _health_checks(self) -> List[HealthCheck]:
         checks: List[HealthCheck] = []
         manifest = self.dep("data").available()
@@ -366,7 +381,7 @@ class OpsModule(Module):
         except Exception as ex:
             rules_ok, why = False, "%s: %s" % (type(ex).__name__, ex)
         checks.append(HealthCheck("rules-dependency", rules_ok, why))
-        for row in KNOWN:
+        for row in self._known_rows():
             if manifest and rules_ok:
                 checks.append(self._check_known(*row))
             else:
@@ -396,7 +411,8 @@ class OpsModule(Module):
         """element / seed / swap behave on the embedded weapon, shield and pearlescent."""
         name = "transforms"
         try:
-            weapon, shield, pearl = KNOWN[0][1], KNOWN[1][1], KNOWN[2][1]
+            known = self._known_rows()
+            weapon, shield, pearl = known[0][1], known[1][1], known[2][1]
             if self.set_element(weapon, "shock") != weapon:
                 return HealthCheck(name, False, "set_element to the item's own element changed the serial")
             stripped = self.set_element(weapon, "impact")
@@ -406,7 +422,7 @@ class OpsModule(Module):
             if any(_is_element_part(b) for b in codec.decode(stripped)) or readded != [INDEX_BY_ELEMENT["shock"]]:
                 return HealthCheck(name, False, "impact strip / re-add failed")
             reseeded = self.set_seed(weapon, 1234)
-            if self.get_seed(reseeded) != 1234 or self.set_seed(reseeded, KNOWN[0][7]) != weapon:
+            if self.get_seed(reseeded) != 1234 or self.set_seed(reseeded, known[0][7]) != weapon:
                 return HealthCheck(name, False, "seed set/restore failed")
             if self.swap_parts(weapon, weapon, [0, 1]) != weapon:
                 return HealthCheck(name, False, "self-swap changed the serial")

@@ -1,0 +1,487 @@
+{
+  "_synthetic": "SYNTHETIC — not game data",
+  "9101:21": {
+    "pack": "bounty_pack_3",
+    "name": "Pack 3 Barrel"
+  },
+  "9101:22": {
+    "pack": "story_pack_1",
+    "name": "Story Barrel"
+  },
+  "9101:5": {
+    "name": "Liberator",
+    "rarity": "Legendary",
+    "tags": [
+      "legendary",
+      "unique"
+    ]
+  },
+  "9101:6": {
+    "name": "Fine Print",
+    "rarity": "Legendary",
+    "tags": [
+      "legendary",
+      "unique"
+    ]
+  },
+  "9101:7": {
+    "name": "Skeleton Key",
+    "rarity": "Pearl",
+    "tags": [
+      "pearlescent",
+      "unique"
+    ]
+  },
+  "9102:21": {
+    "pack": "bounty_pack_3",
+    "name": "Pack 3 Barrel"
+  },
+  "9102:22": {
+    "pack": "story_pack_1",
+    "name": "Story Barrel"
+  },
+  "9102:5": {
+    "name": "Open Vault",
+    "rarity": "Legendary",
+    "tags": [
+      "legendary",
+      "unique"
+    ]
+  },
+  "9102:6": {
+    "name": "Right To Repair",
+    "rarity": "Legendary",
+    "tags": [
+      "legendary",
+      "unique"
+    ]
+  },
+  "9102:7": {
+    "name": "Warranty Void",
+    "rarity": "Pearl",
+    "tags": [
+      "pearlescent",
+      "unique"
+    ]
+  },
+  "9103:21": {
+    "pack": "bounty_pack_3",
+    "name": "Pack 3 Barrel"
+  },
+  "9103:22": {
+    "pack": "story_pack_1",
+    "name": "Story Barrel"
+  },
+  "9103:5": {
+    "name": "Free Radical",
+    "rarity": "Legendary",
+    "tags": [
+      "legendary",
+      "unique"
+    ]
+  },
+  "9103:6": {
+    "name": "Source Code",
+    "rarity": "Legendary",
+    "tags": [
+      "legendary",
+      "unique"
+    ]
+  },
+  "9103:7": {
+    "name": "Root Access",
+    "rarity": "Pearl",
+    "tags": [
+      "pearlescent",
+      "unique"
+    ]
+  },
+  "9104:21": {
+    "pack": "bounty_pack_3",
+    "name": "Pack 3 Barrel"
+  },
+  "9104:22": {
+    "pack": "story_pack_1",
+    "name": "Story Barrel"
+  },
+  "9104:5": {
+    "name": "Jailbreaker",
+    "rarity": "Legendary",
+    "tags": [
+      "legendary",
+      "unique"
+    ]
+  },
+  "9104:6": {
+    "name": "Open Source",
+    "rarity": "Legendary",
+    "tags": [
+      "legendary",
+      "unique"
+    ]
+  },
+  "9104:7": {
+    "name": "Public Domain",
+    "rarity": "Pearl",
+    "tags": [
+      "pearlescent",
+      "unique"
+    ]
+  },
+  "9105:21": {
+    "pack": "bounty_pack_3",
+    "name": "Pack 3 Barrel"
+  },
+  "9105:22": {
+    "pack": "story_pack_1",
+    "name": "Story Barrel"
+  },
+  "9105:5": {
+    "name": "Uncapped",
+    "rarity": "Legendary",
+    "tags": [
+      "legendary",
+      "unique"
+    ]
+  },
+  "9105:6": {
+    "name": "Clear Sightline",
+    "rarity": "Legendary",
+    "tags": [
+      "legendary",
+      "unique"
+    ]
+  },
+  "9105:7": {
+    "name": "Fair Use",
+    "rarity": "Pearl",
+    "tags": [
+      "pearlescent",
+      "unique"
+    ]
+  },
+  "9106:21": {
+    "pack": "bounty_pack_3",
+    "name": "Pack 3 Barrel"
+  },
+  "9106:22": {
+    "pack": "story_pack_1",
+    "name": "Story Barrel"
+  },
+  "9106:5": {
+    "name": "Unlicensed",
+    "rarity": "Legendary",
+    "tags": [
+      "legendary",
+      "unique"
+    ]
+  },
+  "9106:6": {
+    "name": "Hostile Takeover",
+    "rarity": "Legendary",
+    "tags": [
+      "legendary",
+      "unique"
+    ]
+  },
+  "9106:7": {
+    "name": "Buyback",
+    "rarity": "Pearl",
+    "tags": [
+      "pearlescent",
+      "unique"
+    ]
+  },
+  "9111:21": {
+    "pack": "bounty_pack_3",
+    "name": "Pack 3 Barrel"
+  },
+  "9111:22": {
+    "pack": "story_pack_1",
+    "name": "Story Barrel"
+  },
+  "9111:5": {
+    "name": "Gold Standard",
+    "rarity": "Legendary",
+    "tags": [
+      "legendary",
+      "unique"
+    ]
+  },
+  "9111:6": {
+    "name": "Sunset Clause",
+    "rarity": "Legendary",
+    "tags": [
+      "legendary",
+      "unique"
+    ]
+  },
+  "9111:7": {
+    "name": "Escape Hatch",
+    "rarity": "Pearl",
+    "tags": [
+      "pearlescent",
+      "unique"
+    ]
+  },
+  "9112:21": {
+    "pack": "bounty_pack_3",
+    "name": "Pack 3 Barrel"
+  },
+  "9112:22": {
+    "pack": "story_pack_1",
+    "name": "Story Barrel"
+  },
+  "9112:5": {
+    "name": "Loophole",
+    "rarity": "Legendary",
+    "tags": [
+      "legendary",
+      "unique"
+    ]
+  },
+  "9112:6": {
+    "name": "Wide Berth",
+    "rarity": "Legendary",
+    "tags": [
+      "legendary",
+      "unique"
+    ]
+  },
+  "9112:7": {
+    "name": "Master Key",
+    "rarity": "Pearl",
+    "tags": [
+      "pearlescent",
+      "unique"
+    ]
+  },
+  "9113:21": {
+    "pack": "bounty_pack_3",
+    "name": "Pack 3 Barrel"
+  },
+  "9113:22": {
+    "pack": "story_pack_1",
+    "name": "Story Barrel"
+  },
+  "9113:5": {
+    "name": "Backdoor",
+    "rarity": "Legendary",
+    "tags": [
+      "legendary",
+      "unique"
+    ]
+  },
+  "9113:6": {
+    "name": "Patch Notes",
+    "rarity": "Legendary",
+    "tags": [
+      "legendary",
+      "unique"
+    ]
+  },
+  "9113:7": {
+    "name": "Zero Day",
+    "rarity": "Pearl",
+    "tags": [
+      "pearlescent",
+      "unique"
+    ]
+  },
+  "9201:5": {
+    "name": "Safe Harbor",
+    "rarity": "Legendary",
+    "tags": [
+      "legendary",
+      "unique"
+    ]
+  },
+  "9201:6": {
+    "name": "Cold Storage",
+    "rarity": "Legendary",
+    "tags": [
+      "legendary",
+      "unique"
+    ]
+  },
+  "9201:7": {
+    "name": "Golden Parachute",
+    "rarity": "Pearl",
+    "tags": [
+      "pearlescent",
+      "unique"
+    ]
+  },
+  "9202:5": {
+    "name": "Second Wind",
+    "rarity": "Legendary",
+    "tags": [
+      "legendary",
+      "unique"
+    ]
+  },
+  "9202:6": {
+    "name": "Field Patch",
+    "rarity": "Legendary",
+    "tags": [
+      "legendary",
+      "unique"
+    ]
+  },
+  "9202:7": {
+    "name": "Full Refund",
+    "rarity": "Pearl",
+    "tags": [
+      "pearlescent",
+      "unique"
+    ]
+  },
+  "9203:5": {
+    "name": "Bad Debt",
+    "rarity": "Legendary",
+    "tags": [
+      "legendary",
+      "unique"
+    ]
+  },
+  "9203:6": {
+    "name": "Eviction Notice",
+    "rarity": "Legendary",
+    "tags": [
+      "legendary",
+      "unique"
+    ]
+  },
+  "9203:7": {
+    "name": "Hard Reset",
+    "rarity": "Pearl",
+    "tags": [
+      "pearlescent",
+      "unique"
+    ]
+  },
+  "9204:5": {
+    "name": "Tune Up",
+    "rarity": "Legendary",
+    "tags": [
+      "legendary",
+      "unique"
+    ]
+  },
+  "9204:6": {
+    "name": "Overclock",
+    "rarity": "Legendary",
+    "tags": [
+      "legendary",
+      "unique"
+    ]
+  },
+  "9204:7": {
+    "name": "Factory Reset",
+    "rarity": "Pearl",
+    "tags": [
+      "pearlescent",
+      "unique"
+    ]
+  },
+  "9211:5": {
+    "name": "Quiet Quitter",
+    "rarity": "Legendary",
+    "tags": [
+      "legendary",
+      "unique"
+    ]
+  },
+  "9211:6": {
+    "name": "Paper Trail",
+    "rarity": "Legendary",
+    "tags": [
+      "legendary",
+      "unique"
+    ]
+  },
+  "9211:7": {
+    "name": "Soft Landing",
+    "rarity": "Pearl",
+    "tags": [
+      "pearlescent",
+      "unique"
+    ]
+  },
+  "9212:5": {
+    "name": "Night Shift",
+    "rarity": "Legendary",
+    "tags": [
+      "legendary",
+      "unique"
+    ]
+  },
+  "9212:6": {
+    "name": "Fine Tooth",
+    "rarity": "Legendary",
+    "tags": [
+      "legendary",
+      "unique"
+    ]
+  },
+  "9212:7": {
+    "name": "Blank Check",
+    "rarity": "Pearl",
+    "tags": [
+      "pearlescent",
+      "unique"
+    ]
+  },
+  "9213:5": {
+    "name": "Crash Test",
+    "rarity": "Legendary",
+    "tags": [
+      "legendary",
+      "unique"
+    ]
+  },
+  "9213:6": {
+    "name": "Dead Reckoning",
+    "rarity": "Legendary",
+    "tags": [
+      "legendary",
+      "unique"
+    ]
+  },
+  "9213:7": {
+    "name": "Clean Slate",
+    "rarity": "Pearl",
+    "tags": [
+      "pearlescent",
+      "unique"
+    ]
+  },
+  "9214:5": {
+    "name": "Iron Clause",
+    "rarity": "Legendary",
+    "tags": [
+      "legendary",
+      "unique"
+    ]
+  },
+  "9214:6": {
+    "name": "Hold Fast",
+    "rarity": "Legendary",
+    "tags": [
+      "legendary",
+      "unique"
+    ]
+  },
+  "9214:7": {
+    "name": "Last Stand Ltd",
+    "rarity": "Pearl",
+    "tags": [
+      "pearlescent",
+      "unique"
+    ]
+  },
+  "9250:8": {
+    "name": "Firmware Eight",
+    "pack": "bounty_pack_3"
+  }
+}

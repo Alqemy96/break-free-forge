@@ -11,9 +11,9 @@ import { ItemCard, ItemCardSkeleton } from './ItemCard'
 import { useForge } from './store'
 
 const QUICK_PICKS: { label: string; patch: Partial<SearchForm> }[] = [
-  { label: 'Anarchy', patch: { query: 'anarchy' } },
-  { label: 'Cryo shotguns', patch: { type: 'shotgun', element: 'cryo' } },
-  { label: 'Gravitar class mods', patch: { type: 'classmod', character: 'gravitar' } },
+  { label: 'Epic pistols', patch: { type: 'pistol', rarity: 'Epic' } },
+  { label: 'Cryo SMGs', patch: { type: 'smg', element: 'cryo' } },
+  { label: 'Class mods', patch: { type: 'classmod' } },
   { label: 'Legendary shields', patch: { type: 'shield', rarity: 'Legendary' } },
   { label: 'Shock SMGs', patch: { type: 'smg', element: 'shock' } },
 ]
@@ -75,12 +75,12 @@ export function Results({ onRun }: { onRun: () => void }) {
         />
       ) : null}
 
-      {status === 'error' && error ? <ErrorState title="Search failed" message={error.message} code={error.code} onRetry={onRun} /> : null}
+      {status === 'error' && error ? <ErrorState title="Search failed" message={error.message} code={error.code} onRetry={onRun} art="ai-ally" /> : null}
 
       {data && status !== 'error' ? <Notices onRun={onRun} /> : null}
 
       {status === 'idle' && !data ? (
-        <EmptyState icon={PackageSearch} title="The locker is closed" className="mt-2">
+        <EmptyState icon={PackageSearch} title="The locker is closed" className="mt-2" art="takeover">
           <p>
             Pick a type, an element or a rarity, or type part of a name, then run the search. Every code is checked against its
             own bitstream before it is shown.
@@ -104,7 +104,7 @@ export function Results({ onRun }: { onRun: () => void }) {
       ) : null}
 
       {data && data.count === 0 && status !== 'error' ? (
-        <EmptyState icon={SearchX} title="Nothing matched">
+        <EmptyState icon={SearchX} title="Nothing matched" art="ai-ally">
           <p>
             No code passed every filter{ran?.element ? ` (element ${elementLabel(ran.element)})` : ''}. Clear a filter or try a
             shorter name.

@@ -1,0 +1,52 @@
+# SYNTHETIC — not game data
+np_backdoor	Backdoor
+np_baddebt	Bad Debt
+np_blankcheck	Blank Check
+np_buyback	Buyback
+np_cleanslate	Clean Slate
+np_clearsightline	Clear Sightline
+np_coldstorage	Cold Storage
+np_crashtest	Crash Test
+np_deadreckoning	Dead Reckoning
+np_escapehatch	Escape Hatch
+np_evictionnotice	Eviction Notice
+np_factoryreset	Factory Reset
+np_fairuse	Fair Use
+np_fieldpatch	Field Patch
+np_fineprint	Fine Print
+np_finetooth	Fine Tooth
+np_freeradical	Free Radical
+np_fullrefund	Full Refund
+np_goldenparachute	Golden Parachute
+np_goldstandard	Gold Standard
+np_hardreset	Hard Reset
+np_holdfast	Hold Fast
+np_hostiletakeover	Hostile Takeover
+np_ironclause	Iron Clause
+np_jailbreaker	Jailbreaker
+np_laststandltd	Last Stand Ltd
+np_liberator	Liberator
+np_loophole	Loophole
+np_masterkey	Master Key
+np_nightshift	Night Shift
+np_opensource	Open Source
+np_openvault	Open Vault
+np_overclock	Overclock
+np_papertrail	Paper Trail
+np_patchnotes	Patch Notes
+np_publicdomain	Public Domain
+np_quietquitter	Quiet Quitter
+np_righttorepair	Right To Repair
+np_rootaccess	Root Access
+np_safeharbor	Safe Harbor
+np_secondwind	Second Wind
+np_skeletonkey	Skeleton Key
+np_softlanding	Soft Landing
+np_sourcecode	Source Code
+np_sunsetclause	Sunset Clause
+np_tuneup	Tune Up
+np_uncapped	Uncapped
+np_unlicensed	Unlicensed
+np_warrantyvoid	Warranty Void
+np_wideberth	Wide Berth
+np_zeroday	Zero Day

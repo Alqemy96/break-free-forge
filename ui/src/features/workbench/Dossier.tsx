@@ -4,11 +4,13 @@ import type { IdentifyResponse } from '@/api/types'
 import { CopyButton } from '@/components/fx/copy-button'
 import { TextScramble } from '@/components/fx/text-scramble'
 import { ElementBadge, RarityBadge } from '@/components/item/badges'
+import { ItemIcon } from '@/components/item/ItemIcon'
 import { SerialText } from '@/components/item/serial'
 import { rarityColor } from '@/components/item/tokens'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { rarityKey } from '@/lib/format'
+import { iconKindOf } from '@/lib/itemKind'
 import { newId } from '@/lib/utils'
 import { toast } from '@/state/toast'
 import { useTray } from '@/state/trayStore'
@@ -18,6 +20,7 @@ export function Dossier({ payload, marked }: { payload: IdentifyResponse; marked
   const { info } = payload
   const rKey = rarityKey(info.rarity)
   const name = info.display_name || info.legendary_name || info.category || 'Unknown item'
+  const icon = iconKindOf({ category: info.category })
   const inTray = useTray((s) => s.tray.items.some((it) => it.serial === payload.serial))
   const dispatch = useTray((s) => s.dispatch)
 
@@ -33,6 +36,7 @@ export function Dossier({ payload, marked }: { payload: IdentifyResponse; marked
         element: info.element,
         level: info.level,
         kind: payload.is_weapon ? 'weapon' : 'gear',
+        icon,
       },
     })
     toast(`Added ${name} to the loadout`, 'ok')
@@ -40,7 +44,10 @@ export function Dossier({ payload, marked }: { payload: IdentifyResponse; marked
 
   return (
     <article className="flex min-w-0 flex-col gap-5" aria-labelledby="dossier-name" style={{ '--spot': rarityColor(rKey) } as CSSProperties}>
-      <header className="panel relative overflow-hidden p-5">
+      <header className="panel ink-edge relative overflow-hidden p-5 lg:pr-[300px]">
+        <div aria-hidden className="pointer-events-none absolute top-5 right-6 hidden w-[250px] lg:block">
+          <ItemIcon kind={icon} rarity={info.rarity} element={info.element} />
+        </div>
         <span aria-hidden className="absolute inset-y-0 left-0 w-1" style={{ background: 'var(--spot)', boxShadow: '0 0 18px var(--spot)' }} />
         <span
           aria-hidden
@@ -48,7 +55,7 @@ export function Dossier({ payload, marked }: { payload: IdentifyResponse; marked
           style={{ background: 'var(--spot)' }}
         />
         <p className="micro text-fg-dim">{info.category ?? 'Unknown category'} / category {info.category_id ?? '?'}</p>
-        <h2 id="dossier-name" className="title-display mt-1 text-[clamp(34px,4.6vw,56px)] text-fg">
+        <h2 id="dossier-name" className="title-display mt-1 text-[clamp(30px,4vw,48px)] text-fg">
           <TextScramble text={name} duration={0.7} trigger={payload.serial} />
         </h2>
         <div className="mt-3 flex flex-wrap items-center gap-1.5">

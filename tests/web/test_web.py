@@ -27,6 +27,7 @@ from bl4forge.core.module import Module
 from bl4forge.core.ports import RenderPort, OpsPort
 from bl4forge.core.types import HealthReport, LoadoutItem, LoadoutRequest, SearchQuery
 from bl4forge.web import MAX_BODY, PortInUse, create_server, host_allowed
+from tests.dataset import D
 
 ROOT = Path(__file__).resolve().parents[2]
 JSON_CT = {"Content-Type": "application/json"}
@@ -34,17 +35,17 @@ STRUCTURAL = "passed structural checks only; in-game validity is not guaranteed"
 
 README_EXAMPLES = {
     "cryo loadout": [
-        {"group": "Weapons", "type": "shotgun", "element": "cryo", "query": "anarchy"},
+        {"group": "Weapons", "type": "shotgun", "element": "cryo", "query": D.SHOTGUN_Q},
         {"group": "Weapons", "type": "sniper", "element": "cryo"},
-        {"group": "Gear", "query": "super soldier", "element": "cryo"},
+        {"group": "Gear", "query": D.GEAR_Q, "element": "cryo"},
         {"group": "Gear", "type": "classmod"},
         {"group": "Gear", "type": "repkit"},
         {"group": "Gear", "type": "grenade"},
     ],
     "wombo combo + plasma coil + cryo super soldier": [
-        {"group": "Weapons", "query": "wombo combo", "element": "cryo"},
-        {"group": "Weapons", "query": "plasma coil"},
-        {"group": "Gear", "query": "super soldier", "element": "cryo"},
+        {"group": "Weapons", "query": D.WOMBO_Q, "element": "cryo"},
+        {"group": "Weapons", "query": D.PLASMA_Q},
+        {"group": "Gear", "query": D.GEAR_Q, "element": "cryo"},
     ],
     "level 60 radiation shotgun": [
         {"type": "shotgun", "element": "radiation"},
@@ -155,7 +156,7 @@ def web(forge):
 def serials(forge):
     """Real serials at their stored level 50, plus a same-category pair for swaps."""
     cat, codec = forge.catalog, forge.codec
-    shotgun = cat.search(SearchQuery(query="anarchy", element="cryo", type="shotgun", limit=1)).entries[0].serial
+    shotgun = cat.search(SearchQuery(query=D.SHOTGUN_Q, element="cryo", type="shotgun", limit=1)).entries[0].serial
     shield = cat.search(SearchQuery(type="shield", limit=1)).entries[0].serial
     classmod = cat.search(SearchQuery(type="classmod", character="gravitar", limit=1)).entries[0].serial
     repkit = cat.search(SearchQuery(type="repkit", limit=1)).entries[0].serial
@@ -181,7 +182,7 @@ def test_meta(web, forge):
                       "elements", "rarities", "characters", "types"}
     assert m["level"] == forge.config.level and m["character"] == forge.config.character
     assert m["owned_packs"] == list(forge.config.owned_packs)
-    assert m["catalog_count"] == forge.catalog.count() == 9875
+    assert m["catalog_count"] == forge.catalog.count() == D.CATALOG_ROWS
     assert m["manifest_version"] == forge.data.manifest_version()
     assert m["elements"] == [{"id": e, "label": vocab.ELEMENT_LABELS[e]} for e in vocab.ELEMENTS]
     assert m["rarities"] == list(vocab.RARITIES) and m["characters"] == list(vocab.CHARACTERS)
@@ -214,10 +215,10 @@ def test_stats_verbatim(web, forge):
 # ---- search ---------------------------------------------------------------------------------------------
 
 SEARCHES = [
-    {"query": "anarchy", "type": "shotgun", "element": "cryo", "limit": 5},
+    {"query": D.SHOTGUN_Q, "type": "shotgun", "element": "cryo", "limit": 5},
     {"type": "sniper", "element": "electric", "limit": 10},                  # alias -> shock
-    {"query": "super soldier", "rarity": "legendary", "limit": 3},
-    {"type": "ar", "manufacturer": "vladof", "limit": 7},
+    {"query": D.GEAR_Q, "rarity": "legendary", "limit": 3},
+    {"type": "ar", "manufacturer": D.AR_MFR, "limit": 7},
     {"type": "shield", "limit": 25},
     {"type": "classmod", "character": "paladin", "limit": 4},
     {"type": "repkit", "limit": 2},
@@ -630,7 +631,7 @@ def test_build_without_level_does_not_relevel(web, forge):
     r = web.post("/api/build", {"requests": [{"type": "shield"}]})
     assert r.status == 200
     lo = r.json["loadout"]
-    assert lo["level"] is None and lo["title"] == "Borderlands 4 Loadout"
+    assert lo["level"] is None and lo["title"] == "Break Free Loadout"
     assert [i["serial"] for i in lo["items"]] == [
         i.serial for i in forge.builder.build([LoadoutRequest(type="shield")], level=None).items]
     assert lo["items"][0]["level"] == 50
@@ -1345,7 +1346,7 @@ def test_serve_runs_logs_and_stops_cleanly_on_ctrl_c():
         conn = http.client.HTTPConnection("127.0.0.1", port, timeout=20)
         conn.request("GET", "/api/meta")
         r = conn.getresponse()
-        assert r.status == 200 and json.loads(r.read())["catalog_count"] == 9875
+        assert r.status == 200 and json.loads(r.read())["catalog_count"] == D.CATALOG_ROWS
         conn.request("GET", "/api/search?limit=0")
         assert conn.getresponse().read() and True
         conn.close()

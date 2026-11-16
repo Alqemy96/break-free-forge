@@ -97,7 +97,7 @@ export function clampLimit(value: number | string | null | undefined, fallback =
   return Math.min(200, Math.max(1, Math.trunc(n)))
 }
 
-/** "26 hidden: needs Bounty Pack 3 - A Zane to Kill For" (one line per pack). */
+/** "26 hidden: needs Expansion Pack 3 - Example Title" (one line per pack). */
 export function hiddenLine(pack: HiddenPack): string {
   return `${formatInt(pack.count)} hidden: needs ${pack.label || pack.pack}`
 }
@@ -116,7 +116,7 @@ export function formatDiffValue(value: JsonValue | undefined): string {
   return JSON.stringify(value)
 }
 
-/** 'Cryo Gravitar!' -> 'cryo-gravitar' (download file names). */
+/** 'Cryo Locksmith!' -> 'cryo-locksmith' (download file names). */
 export function slugify(text: string, fallback = 'loadout'): string {
   const slug = text
     .toLowerCase()
@@ -133,7 +133,7 @@ export function kindOfType(type: string | null | undefined, isWeapon?: boolean):
   return (type ?? '').toLowerCase() === 'weapon' ? 'weapon' : 'gear'
 }
 
-/** "classmod_gravitar" -> "Classmod Gravitar"; used where the server gives raw tokens. */
+/** "classmod_locksmith" -> "Classmod Locksmith"; used where the server gives raw tokens. */
 export function titleCase(text: string): string {
   return text
     .replace(/[_-]+/g, ' ')

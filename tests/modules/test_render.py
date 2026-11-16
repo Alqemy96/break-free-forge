@@ -402,8 +402,8 @@ def test_ungrouped_items_are_never_dropped(render):
 
 def test_level_line_and_subtitle(render):
     h = harvest(render.html(loadout(item(), level=60)))
-    assert ("subtitle", "1 import-ready code, re-leveled to 60. Paste each into the Item Builder's "
-            "decoder box, Decode & Validate, then Add to Backpack.") in h.records
+    assert ("subtitle", "1 import-ready code, re-leveled to 60. Paste each into your save editor's item import, "
+            "Decode & Validate, then Add to Backpack.") in h.records
     h = harvest(render.html(loadout(item(), item("b", SERIAL_B), level=None)))
     assert [t for k, t in h.records if k == "subtitle"][0].startswith("2 import-ready codes, re-leveled to their saved level.")
     assert "All codes re-leveled" in render.text(loadout(item(), level=55))
@@ -414,7 +414,8 @@ def test_level_line_and_subtitle(render):
 def test_import_instructions_survive(render):
     h = harvest(render.html(loadout(item())))
     tldr = [t for k, t in h.records if k == "tldr"][0]
-    for must in ("Item Builder", "decoder box", "Decode & Validate", "Add to Backpack",
+    assert "Item Builder" not in tldr and "save-editor.be" not in tldr
+    for must in ("save editor's item import", "decoder box", "Decode & Validate", "Add to Backpack",
                  "Nothing touches your real save until you hit Overwrite Existing Save"):
         assert must in tldr
     steps = [t for k, t in h.records if k == "step"]

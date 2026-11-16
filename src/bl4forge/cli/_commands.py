@@ -406,7 +406,7 @@ def cmd_build(ctx: Context, args: Any) -> int:
     level = _effective_level(ctx, args)
     builder = ctx.use("builder")
     render = ctx.use("render")
-    title = args.title or "Borderlands 4 Loadout"
+    title = args.title or "Break Free Loadout"
     try:
         loadout = builder.build(requests, level=level, title=title)
     except NotImplementedError as ex:

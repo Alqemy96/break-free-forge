@@ -1,0 +1,13 @@
+{
+  "_synthetic": "SYNTHETIC — not game data",
+  "Shield": {
+    "name": "Shield",
+    "path": "synthetic/Shield",
+    "manufacturers": [
+      {
+        "code": "BFA",
+        "name": "Breakfree Arms"
+      }
+    ]
+  }
+}

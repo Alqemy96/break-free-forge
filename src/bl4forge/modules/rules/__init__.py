@@ -160,6 +160,24 @@ class RulesModule(Module):
             raise SerialError("cannot decode serial: %s: %s" % (type(ex).__name__, ex)) from ex
 
     # ---- self-check ---------------------------------------------------------------------------
+    def _known(self):
+        """Known answers for the active dataset: the real-data constants in `_known`, or the ones shipped with
+        the synthetic demo set. Returned as an object with the same attribute names as `_known`."""
+        try:
+            fn = getattr(self._data, "known_answers", None)
+            synth = fn() if fn else None
+        except Exception:
+            synth = None
+        r = synth.get("rules") if synth else None
+        if not r:
+            return K
+        from types import SimpleNamespace
+        return SimpleNamespace(
+            BASE_SERIAL=r["base_serial"], STORY_PACK_SERIAL=r["story_serial"], STORY_PACK_REF=tuple(r["story_ref"]),
+            STORY_PACK=r["story_pack"], BOUNTY_SERIAL=r["bounty_serial"], BOUNTY_REF=tuple(r["bounty_ref"]),
+            BOUNTY_PACK=r["bounty_pack"], TWO_COMPS_SERIAL=r["two_comps_serial"],
+            PEARL_TWO_COMPS_SERIAL=r["pearl_two_comps_serial"], KIT_SERIAL=r["kit_serial"])
+
     def health(self) -> HealthReport:
         checks: List[HealthCheck] = []
         try:
@@ -189,45 +207,50 @@ class RulesModule(Module):
         return HealthCheck("pack-label", got == "Base game", "pack_label('coregame') = %r" % got)
 
     def _check_base_game(self) -> HealthCheck:
-        got = self.serial_ownership(K.BASE_SERIAL)
+        k = self._known()
+        got = self.serial_ownership(k.BASE_SERIAL)
         return HealthCheck("base-game-owned", got == (True, None), "base-game serial -> %r" % (got,))
 
     def _check_story_pack(self) -> HealthCheck:
+        k = self._known()
         # Config-independent facts first, then the verdict the CURRENT owned set must give.
-        cat, idx = K.STORY_PACK_REF
+        cat, idx = k.STORY_PACK_REF
         pack = self.pack_of(cat, idx)
-        if pack != K.STORY_PACK:
+        if pack != k.STORY_PACK:
             return HealthCheck("story-pack-1", False, "pack_of(%d, %d) = %r, expected %r"
-                               % (cat, idx, pack, K.STORY_PACK))
-        want = (True, None) if K.STORY_PACK in self._owned else (False, K.STORY_PACK)
-        got = self.serial_ownership(K.STORY_PACK_SERIAL)
+                               % (cat, idx, pack, k.STORY_PACK))
+        want = (True, None) if k.STORY_PACK in self._owned else (False, k.STORY_PACK)
+        got = self.serial_ownership(k.STORY_PACK_SERIAL)
         return HealthCheck("story-pack-1", got == want and self.is_owned(cat, idx) == want[0],
                            "Story Pack 1 serial -> %r (expected %r)" % (got, want))
 
     def _check_bounty_pack(self) -> HealthCheck:
+        k = self._known()
         # A real item: base-game name and composition, one Bounty Pack 3 barrel.
-        cat, idx = K.BOUNTY_REF
+        cat, idx = k.BOUNTY_REF
         pack = self.pack_of(cat, idx)
-        if pack != K.BOUNTY_PACK:
+        if pack != k.BOUNTY_PACK:
             return HealthCheck("ownership-per-part", False, "pack_of(%d, %d) = %r, expected %r"
-                               % (cat, idx, pack, K.BOUNTY_PACK))
-        want = (True, None) if K.BOUNTY_PACK in self._owned else (False, K.BOUNTY_PACK)
-        got = self.serial_ownership(K.BOUNTY_SERIAL)
+                               % (cat, idx, pack, k.BOUNTY_PACK))
+        want = (True, None) if k.BOUNTY_PACK in self._owned else (False, k.BOUNTY_PACK)
+        got = self.serial_ownership(k.BOUNTY_SERIAL)
         return HealthCheck("ownership-per-part", got == want, "DLC barrel on a base-game gun -> %r (expected %r)"
                            % (got, want))
 
     def _check_list_parts(self) -> HealthCheck:
-        blocks = self._blocks(K.KIT_SERIAL)
+        k = self._known()
+        blocks = self._blocks(k.KIT_SERIAL)
         refs = list(coords(blocks, self._codec.get_category_id(blocks)))
         listed = [r for r in refs if r[3]]
         ok = (bool(listed) and all(r[2] in self._data.part_table(r[1]) for r in listed)
-              and self.serial_ownership(K.KIT_SERIAL) == (True, None))
+              and self.serial_ownership(k.KIT_SERIAL) == (True, None))
         return HealthCheck("list-parts", ok, "%d listed part refs resolve" % len(listed))
 
     def _check_structure(self) -> HealthCheck:
-        base = self.validate(K.BASE_SERIAL)
-        two = self.validate(K.TWO_COMPS_SERIAL)
-        pearl = self.validate(K.PEARL_TWO_COMPS_SERIAL)
+        k = self._known()
+        base = self.validate(k.BASE_SERIAL)
+        two = self.validate(k.TWO_COMPS_SERIAL)
+        pearl = self.validate(k.PEARL_TWO_COMPS_SERIAL)
         ok = (base == [] and len(two) == 1 and "composition parts" in two[0] and pearl == [])
         return HealthCheck("structure", ok, "clean=%r, two non-pearl comps=%d problem(s), pearl with two=%r"
                            % (base, len(two), pearl))

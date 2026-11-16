@@ -133,6 +133,6 @@ describe('parseTrayState', () => {
     expect(repaired?.items[0]).toMatchObject({ group: 'Mine', element: 'shock', kind: 'gear', displayName: '' })
     expect(repaired?.groups).toEqual(['Mine'])
     expect(repaired?.level).toBeNull()
-    expect(repaired?.title).toBe('Borderlands 4 Loadout')
+    expect(repaired?.title).toBe('Break Free Loadout')
   })
 })

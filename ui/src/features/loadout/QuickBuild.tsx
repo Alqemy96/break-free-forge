@@ -16,9 +16,9 @@ import { useTray } from '@/state/trayStore'
 import { useBuild } from './buildStore'
 
 const EXAMPLE = `[
-  {"group": "Weapons", "query": "wombo combo", "element": "cryo", "display_name": "Wombo Combo"},
+  {"group": "Weapons", "query": "skeleton", "element": "cryo", "display_name": "My Cryo SMG"},
   {"group": "Weapons", "type": "shotgun", "element": "radiation"},
-  {"group": "Gear", "type": "classmod", "character": "gravitar"},
+  {"group": "Gear", "type": "classmod", "character": "locksmith"},
   {"group": "Gear", "type": "shield", "query": "super soldier"},
   {"group": "Gear", "type": "repkit"}
 ]`

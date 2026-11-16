@@ -57,8 +57,13 @@ cli, web   outer layers that use a Forge
 
 ```
 python -m pip install -e .[dev]
+(cd ui && npm ci && npm run build)   # the web tests serve the built UI bundle
 python -m pytest -q
 ```
+
+- Build the UI first: it writes `src/bl4forge/web/static/` (git-ignored). Without it the web tests that
+  serve the default bundle fail with 404.
+- Built-in test serials in the `_known.py` files are public community codes, kept as known answers.
 
 - Standard library plus pytest. No network. No game, console, or save file is needed.
 - Tests that need the user-supplied data or the (unshipped) legacy parity oracle **skip cleanly**; see

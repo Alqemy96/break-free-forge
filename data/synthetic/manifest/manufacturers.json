@@ -1,0 +1,13 @@
+{
+  "_synthetic": "SYNTHETIC — not game data",
+  "BFA": {
+    "code": "BFA",
+    "name": "Breakfree Arms",
+    "path": "synthetic/BFA"
+  },
+  "OVC": {
+    "code": "OVC",
+    "name": "Open Vault Co",
+    "path": "synthetic/OVC"
+  }
+}

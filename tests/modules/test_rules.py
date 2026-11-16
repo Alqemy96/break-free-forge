@@ -21,7 +21,9 @@ from bl4forge.core.types import Block, Part, SUBTYPE_INT, SUBTYPE_LIST, SUBTYPE_
 from bl4forge.modules.data import DataModule
 from bl4forge.modules import rules as rules_pkg
 from bl4forge.modules.rules import CONTENT_PACKS, MODULE, NO_MANIFEST, RulesModule
-from bl4forge.modules.rules import _known as K
+from tests.dataset import D, rules_known
+
+K = rules_known()
 
 STORY = "story_pack_1"
 BOUNTY_3 = "bounty_pack_3"
@@ -396,8 +398,9 @@ def test_validate_problem_kinds_match_legacy(forge, rules, legacy):
 
 def test_validate_checks_unknown_parts_in_the_right_table(forge, rules):
     """An unknown cross-category part is reported against the table it was looked up in (legacy named the item's)."""
-    got = rules.validate(with_part(forge.codec, K.BASE_SERIAL, cross(20, 9999)))
-    assert got == ["part index 9999 does not exist in the Daedalus SMG table"]
+    cat, name = (9103, "Breakfree SMG") if D.synthetic else (20, "Daedalus SMG")
+    got = rules.validate(with_part(forge.codec, K.BASE_SERIAL, cross(cat, 9999)))
+    assert got == ["part index 9999 does not exist in the %s table" % name]
 
 
 # ---- parity with legacy over the whole database -----------------------------------------------

@@ -1,4 +1,4 @@
-# Break Free Forge — BL4 Forge
+# Break Free Forge
 
 *You bought it. You should be able to open it.*
 

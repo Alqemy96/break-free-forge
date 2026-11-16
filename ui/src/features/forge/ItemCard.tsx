@@ -7,6 +7,7 @@ import { CopyButton } from '@/components/fx/copy-button'
 import { trackSpotlight } from '@/components/fx/spotlight'
 import { TextScramble } from '@/components/fx/text-scramble'
 import { ElementBadge, RarityBadge } from '@/components/item/badges'
+import { ItemIcon } from '@/components/item/ItemIcon'
 import { SerialText } from '@/components/item/serial'
 import { rarityColor } from '@/components/item/tokens'
 import { Badge } from '@/components/ui/badge'
@@ -14,6 +15,7 @@ import { Button } from '@/components/ui/button'
 import { Tooltip } from '@/components/ui/tooltip'
 import { navigate } from '@/hooks/useRoute'
 import { elementKey, elementLabel, kindOfType, rarityKey } from '@/lib/format'
+import { iconKindOf } from '@/lib/itemKind'
 import { cn, newId } from '@/lib/utils'
 import { toast } from '@/state/toast'
 import { useTray } from '@/state/trayStore'
@@ -30,6 +32,7 @@ export function ItemCard({ row, index }: { row: SearchResultRow; index: number }
   const elementDisagrees = hintElement !== null && element !== null && hintElement !== element
   const warnings = [...decoded.warnings, ...(row.warnings ?? [])]
   const decodesAs = decoded.display_name && !row.name.toLowerCase().includes(decoded.display_name.toLowerCase()) ? decoded.display_name : null
+  const icon = iconKindOf({ type: row.type, weaponType: row.weapon_type, category: decoded.category })
   const high = rKey === 'legendary' || rKey === 'pearl' || rKey === 'vile'
 
   const toggleTray = () => {
@@ -49,6 +52,8 @@ export function ItemCard({ row, index }: { row: SearchResultRow; index: number }
         element,
         level: row.level,
         kind: kindOfType(row.type),
+        icon,
+        maker: row.manufacturer || undefined,
       },
     })
     toast(`Added ${row.name} to the loadout`, 'ok')
@@ -59,17 +64,18 @@ export function ItemCard({ row, index }: { row: SearchResultRow; index: number }
       <article
         onPointerMove={trackSpotlight}
         style={{ '--spot': rarityColor(rKey), '--edge': `color-mix(in oklab, ${rarityColor(rKey)} 55%, var(--color-line))` } as CSSProperties}
-        className="spotlight spot-chamfer group/card relative flex h-full flex-col gap-3 p-4 pt-5"
+        className="spotlight panel ink-edge group/card relative flex h-full flex-col gap-3 p-4"
         aria-labelledby={`card-${index}-name`}
       >
-        <span aria-hidden className="panel chamfer absolute inset-0 -z-10" />
-        <span aria-hidden className="spotlight-ring chamfer" />
-        <span aria-hidden className="chamfer-edge" />
-        <span
-          aria-hidden
-          className={cn('absolute top-0 right-[14px] left-0 h-[3px]', high && 'shadow-[0_0_14px_var(--spot)]')}
-          style={{ background: `linear-gradient(90deg, var(--spot), color-mix(in oklab, var(--spot) 30%, transparent))` }}
-        />
+        <span aria-hidden className="spotlight-ring" />
+        <div
+          className={cn('relative -mx-4 -mt-4 border-b-2 border-black px-4 pt-3 pb-2', high && 'shadow-[inset_0_-14px_24px_-18px_var(--spot)]')}
+          style={{ background: 'radial-gradient(circle at 75% 25%, color-mix(in oklab, var(--spot) 22%, transparent), transparent 62%), #08090d' }}
+        >
+          <span aria-hidden className="absolute inset-0 opacity-[0.22]" style={{ backgroundImage: 'radial-gradient(circle, var(--spot) 1.4px, transparent 1.9px)', backgroundSize: '9px 9px', maskImage: 'linear-gradient(200deg, #000, transparent 62%)', WebkitMaskImage: 'linear-gradient(200deg, #000, transparent 62%)' }} />
+          <ItemIcon kind={icon} rarity={rarity} element={element} maker={row.manufacturer} className="mx-auto max-w-[220px]" />
+          <span className="absolute top-2 right-2 border-2 border-[color:var(--spot)] bg-black px-1.5 font-display text-[14px] leading-6 text-fg">L{row.level ?? '?'}</span>
+        </div>
 
         <div className="flex flex-wrap items-center gap-1.5 pr-3">
           <RarityBadge rarity={rarity} />
@@ -82,7 +88,7 @@ export function ItemCard({ row, index }: { row: SearchResultRow; index: number }
         </div>
 
         <div className="min-w-0">
-          <h3 id={`card-${index}-name`} className="title-display text-[23px] leading-[1.02] text-fg">
+          <h3 id={`card-${index}-name`} className="title-display text-[21px] leading-[1.05] text-fg">
             <TextScramble text={row.name} duration={0.55} delay={index * 0.035} disabled={index >= 12} />
           </h3>
           <p className="mt-1 truncate text-[13.5px] text-fg-muted" title={row.label}>
@@ -153,7 +159,7 @@ export function ItemCard({ row, index }: { row: SearchResultRow; index: number }
 
 export function ItemCardSkeleton() {
   return (
-    <li className="panel chamfer list-none p-4 pt-5" aria-hidden="true">
+    <li className="panel list-none p-4 pt-5" aria-hidden="true">
       <div className="flex gap-1.5">
         <div className="skeleton h-5 w-20 rounded-[2px]" />
         <div className="skeleton h-5 w-14 rounded-[2px]" />

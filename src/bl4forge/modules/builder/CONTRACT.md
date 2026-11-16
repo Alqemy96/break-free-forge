@@ -109,7 +109,7 @@ with no level (and 30 for the explicit one). `enrich` is also compared with lega
 **State**: none. The module holds no caches or globals; every call asks the neighbours afresh.
 
 ## Notes for callers (cli)
-- `forge.builder.build(requests, level=None, title="Borderlands 4 Loadout")`; `requests` are
+- `forge.builder.build(requests, level=None, title="Break Free Loadout")`; `requests` are
   `LoadoutRequest`s (`LoadoutRequest.from_dict` for JSON spec entries). The cli's `--level` default decides
   whether to pass `config.level` (60) or None; the builder itself never reads `config.level`.
 - Never raises for data problems. Look at `Loadout.unmatched` (misses), `Loadout.warnings` (build notices) and

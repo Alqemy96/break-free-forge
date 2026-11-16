@@ -1,9 +1,11 @@
 """Shared fixtures.
 
-The public tree ships NO game data and NO legacy oracle. Tests that need the serial database
-(data/bl4-serial-matches.json), the extracted manifest (data/manifest/) or the legacy parity oracle
-are SKIPPED cleanly when those are absent. Supply your own data (see docs/runbooks/DEVELOPER.md) to
-run them.
+The public tree ships NO game data and NO legacy oracle. It does ship a fictional dataset
+(data/synthetic, "SYNTHETIC - not game data"), which the config falls back to when you have supplied no data
+of your own, so most tests run against it. Tests whose expectations are facts about the REAL game data
+(specific real items, counts) or that need the legacy parity oracle are SKIPPED with a reason unless you
+supply your own data (see docs/runbooks/DEVELOPER.md). Run them against real data with
+BL4FORGE_DATA=/path/to/your/data.
 """
 import json
 import sys
@@ -16,7 +18,12 @@ LEGACY_SCRIPTS = ROOT / "legacy" / "skills" / "bl4-loadout" / "scripts"
 
 
 def _have_data(config) -> bool:
+    """Any data at all: your own, or the bundled synthetic set."""
     return config.serial_db_path.is_file() and config.manifest_dir.is_dir()
+
+
+def _have_real_data(config) -> bool:
+    return _have_data(config) and not config.is_synthetic
 
 
 @pytest.fixture(scope="session")
@@ -73,9 +80,11 @@ _NEEDS_REAL_DATA = {
 def pytest_collection_modifyitems(config, items):
     from bl4forge.core.config import Config
     cfg = Config.default(root=ROOT)
-    if _have_data(cfg):
+    if _have_real_data(cfg):
         return
-    skip = pytest.mark.skip(reason="needs user-supplied game data (see docs/runbooks/DEVELOPER.md)")
+    skip = pytest.mark.skip(
+        reason="expectations are facts about the real game data; supply your own data to run "
+               "(BL4FORGE_DATA, see docs/runbooks/DEVELOPER.md)")
     for item in items:
         if item.originalname in _NEEDS_REAL_DATA or item.name in _NEEDS_REAL_DATA:
             item.add_marker(skip)

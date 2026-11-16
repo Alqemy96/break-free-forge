@@ -18,7 +18,16 @@ node_modules/
 .claude/settings.local.json
 
 # public-tree hardening: never commit user data, saves, paks, keys or build output
-/data/
+# data/: only the fictional demo set is committed. A real dataset (built with scripts/build_data.py or copied
+# in by you) must never be committed, whatever folder name it lives under.
+/data/*
+!/data/synthetic/
+/data/real/
+/data/real*/
+/data/manifest/
+/data/bl4-serial-matches.json
+/manifest-real/
+/bl4-data/
 *.sav
 *.pak
 *.ucas
@@ -27,3 +36,5 @@ node_modules/
 src/bl4forge/web/static/
 ui/dist/
 ui/dist-mock/
+
+.claude/

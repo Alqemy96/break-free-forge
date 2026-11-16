@@ -221,17 +221,29 @@ class CatalogModule(Module):
             checks.append(HealthCheck(name, bool(ok), detail))
             return bool(ok)
 
+        known_serial, known_query_args, known_element = _KNOWN_SERIAL, ("anarchy", "shotgun"), "impact"
+        try:
+            fn = getattr(self.dep("data"), "known_answers", None)
+            synth = (fn() or {}).get("catalog") if fn else None
+        except Exception:
+            synth = None
+        if synth:       # the bundled synthetic dataset carries its own known answers
+            known_serial = synth["serial"]
+            known_query_args = (synth["query"], synth["type"])
+            known_element = synth["element"]
+
         def database():
             n = self.count()
             return n > 0, "%d rows, %d distinct serials" % (n, len(self._load().by_serial))
 
         def known_query():
-            res = self.search(SearchQuery(query="anarchy", type="shotgun", limit=25,
+            word, typ = known_query_args
+            res = self.search(SearchQuery(query=word, type=typ, limit=25,
                                           verify_element=False, include_unowned=True))
             serials = [e.serial for e in res.entries]
-            ok = _KNOWN_SERIAL in serials and all("anarchy" in e.name.lower() for e in res.entries)
-            return ok, "'anarchy' shotgun -> %d rows, known serial %s" % (
-                len(serials), "present" if _KNOWN_SERIAL in serials else "MISSING")
+            ok = known_serial in serials and all(word in e.name.lower() for e in res.entries)
+            return ok, "'%s' %s -> %d rows, known serial %s" % (
+                word, typ, len(serials), "present" if known_serial in serials else "MISSING")
 
         def aliases():
             empty = [a for a in _HEALTH_ALIASES if not self.search(SearchQuery(
@@ -241,8 +253,8 @@ class CatalogModule(Module):
             return True, "all %d aliases return rows" % len(_HEALTH_ALIASES)
 
         def find():
-            entry = self.find_by_serial('"%s",' % _KNOWN_SERIAL)
-            return entry is not None and entry.serial == _KNOWN_SERIAL, "known serial found by serial"
+            entry = self.find_by_serial('"%s",' % known_serial)
+            return entry is not None and entry.serial == known_serial, "known serial found by serial"
 
         def decodes():
             codec = self.dep("codec")
@@ -254,9 +266,9 @@ class CatalogModule(Module):
 
         def neighbours():
             ops, rules = self.dep("ops"), self.dep("rules")
-            info = ops.describe(_KNOWN_SERIAL)
-            owned, pack = rules.serial_ownership(_KNOWN_SERIAL)
-            ok = info.element == "impact" and owned is True and pack is None
+            info = ops.describe(known_serial)
+            owned, pack = rules.serial_ownership(known_serial)
+            ok = info.element == known_element and owned is True and pack is None
             return ok, "ops.describe -> element %r; rules.serial_ownership -> %r" % (info.element, (owned, pack))
 
         if check("database_loads", database):

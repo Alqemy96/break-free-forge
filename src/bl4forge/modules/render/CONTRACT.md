@@ -14,7 +14,7 @@
 `ELEM_CLASS`. Input is `core.types.Loadout` / `LoadoutItem` (element is a vocab name or None; map it
 to the CSS class here, using `core.vocab.ELEMENT_LABELS`). Keep the look (this is the sheet the maintainer uses);
 the web UI phase will restyle later, so keep CSS in one constant.
-Import instructions text (save-editor.be Item Builder: paste serial -> Decode & Validate -> Add to
+Import instructions text (generic save-editor item import: paste serial -> Decode & Validate -> Add to
 Backpack -> nothing touches the save until Overwrite Existing Save) must stay in the sheet.
 
 ## Invariants

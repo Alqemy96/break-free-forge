@@ -1,5 +1,6 @@
 import { AnimatePresence, MotionConfig, motion } from 'motion/react'
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { InkDefs } from '@/components/fx/ink-defs'
 import { Banners } from '@/components/layout/Banners'
 import { Header } from '@/components/layout/Header'
 import { NavRail } from '@/components/layout/NavRail'
@@ -98,7 +99,8 @@ export function App() {
 
   return (
     <MotionConfig reducedMotion="user">
-      <div className="grain flex h-dvh flex-col overflow-hidden">
+      <div className="flex h-dvh flex-col overflow-hidden">
+        <InkDefs />
         <button
           type="button"
           onClick={() => mainRef.current?.focus()}

@@ -20,6 +20,7 @@ from bl4forge.core.forge import Forge
 from bl4forge.core.module import Module
 from bl4forge.core.ports import OpsPort
 from bl4forge.core.types import CatalogEntry, Loadout, LoadoutItem, SearchQuery
+from tests.dataset import D
 
 ROOT = Path(__file__).resolve().parents[2]
 BL4_FORGE_ENV_KEYS = ("BL4FORGE_CONFIG",)
@@ -66,7 +67,7 @@ def _no_ambient_config(monkeypatch):
 def serials(forge):
     """A few real serials at their stored level 50."""
     cat, codec = forge.catalog, forge.codec
-    shotgun = cat.search(SearchQuery(query="anarchy", element="cryo", type="shotgun", limit=1)).entries[0].serial
+    shotgun = cat.search(SearchQuery(query=D.SHOTGUN_Q, element="cryo", type="shotgun", limit=1)).entries[0].serial
     shield = cat.search(SearchQuery(type="shield", limit=1)).entries[0].serial
     classmod = cat.search(SearchQuery(type="classmod", character="gravitar", limit=1)).entries[0].serial
     by_cat = {}
@@ -145,16 +146,16 @@ def test_catalog_json(capsys, forge):
 # ---- search -------------------------------------------------------------------------------------
 
 SEARCH_CASES = [
-    (["--query", "anarchy", "--element", "cryo", "--type", "shotgun", "--limit", "3"],
-     dict(query="anarchy", element="cryo", type="shotgun", limit=3)),
+    (["--query", D.SHOTGUN_Q, "--element", "cryo", "--type", "shotgun", "--limit", "3"],
+     dict(query=D.SHOTGUN_Q, element="cryo", type="shotgun", limit=3)),
     (["--type", "ar", "--limit", "5"], dict(type="ar", limit=5)),
     (["--type", "sg", "--element", "electric", "--limit", "5"], dict(type="sg", element="electric", limit=5)),
-    (["--manufacturer", "maliwan", "--rarity", "legendary", "--limit", "4"],
-     dict(manufacturer="maliwan", rarity="legendary", limit=4)),
+    (["--manufacturer", D.MFR, "--rarity", "legendary", "--limit", "4"],
+     dict(manufacturer=D.MFR, rarity="legendary", limit=4)),
     (["--type", "classmod", "--character", "paladin", "--limit", "3"],
      dict(type="classmod", character="paladin", limit=3)),
     (["--type", "repkit", "--limit", "3"], dict(type="repkit", limit=3)),
-    (["--query", "wombo combo", "--limit", "2"], dict(query="wombo combo", limit=2)),
+    (["--query", D.WOMBO_Q, "--limit", "2"], dict(query=D.WOMBO_Q, limit=2)),
     (["--type", "pistol", "--element", "fire", "--no-verify", "--limit", "6"],
      dict(type="pistol", element="fire", limit=6, verify_element=False)),
 ]
@@ -174,23 +175,23 @@ def test_search_json_equals_catalog_search(capsys, forge, argv, query):
 
 
 def test_search_relevels_to_config_level_by_default(capsys, forge):
-    q = SearchQuery(query="anarchy", element="cryo", type="shotgun", limit=3)
+    q = SearchQuery(query=D.SHOTGUN_Q, element="cryo", type="shotgun", limit=3)
     expected = forge.catalog.search(q)
-    data = jrun(capsys, ["search", "--query", "anarchy", "--element", "cryo", "--type", "shotgun",
+    data = jrun(capsys, ["search", "--query", D.SHOTGUN_Q, "--element", "cryo", "--type", "shotgun",
                          "--limit", "3", "--json"], forge)
     assert data["level"] == forge.config.level == 60
     assert [r["serial"] for r in data["results"]] == [forge.codec.relevel(e.serial, 60) for e in expected.entries]
     assert all(r["level"] == 60 and r["warnings"] == [] for r in data["results"])
-    data = jrun(capsys, ["search", "--query", "anarchy", "--type", "shotgun", "--limit", "1",
+    data = jrun(capsys, ["search", "--query", D.SHOTGUN_Q, "--type", "shotgun", "--limit", "1",
                          "--level", "42", "--json"], forge)
     assert data["results"][0]["level"] == 42
 
 
 def test_search_text_format(capsys, forge):
-    code, out, err = run(capsys, ["search", "--query", "anarchy", "--element", "cryo", "--type", "shotgun",
+    code, out, err = run(capsys, ["search", "--query", D.SHOTGUN_Q, "--element", "cryo", "--type", "shotgun",
                                   "--level", "60", "--limit", "3"], forge)
     assert code == 0 and err == ""
-    expected = forge.catalog.search(SearchQuery(query="anarchy", element="cryo", type="shotgun", limit=3))
+    expected = forge.catalog.search(SearchQuery(query=D.SHOTGUN_Q, element="cryo", type="shotgun", limit=3))
     lines = [l for l in out.splitlines() if l.strip()]
     assert len(lines) == len(expected.entries)
     for i, (line, e) in enumerate(zip(lines, expected.entries), 1):
@@ -324,7 +325,7 @@ def test_relevel_default_level_comes_from_config(capsys, tmp_path, forge, serial
     code, out, err = run_with_env(capsys, {"BL4FORGE_CONFIG": str(cfg)}, ["relevel", "--serial", s])
     assert code == 0 and out.strip() == forge.codec.relevel(s, 55)
     # search follows the config level as well
-    data = jrun(capsys, ["--config", str(cfg), "search", "--query", "anarchy", "--limit", "1", "--json"])
+    data = jrun(capsys, ["--config", str(cfg), "search", "--query", D.SHOTGUN_Q, "--limit", "1", "--json"])
     assert data["level"] == 55 and data["results"][0]["level"] == 55
 
 
@@ -628,7 +629,7 @@ def jrun_any(capsys, argv, forge):
 
 @pytest.mark.parametrize("argv", [
     ["catalog", "--json"],
-    ["search", "--query", "anarchy", "--limit", "2", "--json"],
+    ["search", "--query", D.SHOTGUN_Q, "--limit", "2", "--json"],
     ["search", "--query", "zzznotanitem", "--json"],
     ["decode", "--serial", "{shotgun}", "--json"],
     ["identify", "--serial", "{shotgun}", "--json"],
@@ -660,7 +661,7 @@ class FakeBuilder:
     def enrich(self, entry, level=None):
         raise NotImplementedError
 
-    def build(self, requests, level=None, title="Borderlands 4 Loadout"):
+    def build(self, requests, level=None, title="Break Free Loadout"):
         self.calls.append({"requests": list(requests), "level": level, "title": title})
         if self.error:
             raise self.error
@@ -696,9 +697,9 @@ def fake_forge(forge, config=None, **fake_kwargs):
 
 
 SPEC = [
-    {"group": "Weapons", "query": "anarchy", "type": "shotgun", "element": "cryo", "display_name": "Anarchy",
+    {"group": "Weapons", "query": D.SHOTGUN_Q, "type": "shotgun", "element": "cryo", "display_name": D.SHOTGUN_NAME,
      "note": "the <em>one</em>"},
-    {"group": "Gear", "query": "super soldier", "element": "cryo"},
+    {"group": "Gear", "query": D.GEAR_Q, "element": "cryo"},
 ]
 
 
@@ -726,7 +727,7 @@ def test_build_inline_spec_writes_both_files_and_prints_the_summary(capsys, forg
     call = fake.calls[0]
     assert call["level"] == 60 and call["title"] == "Cryo Loadout"
     assert [r.group for r in call["requests"]] == ["Weapons", "Gear"]
-    assert call["requests"][0].display_name == "Anarchy" and call["requests"][0].note == "the <em>one</em>"
+    assert call["requests"][0].display_name == D.SHOTGUN_NAME and call["requests"][0].note == "the <em>one</em>"
 
 
 def test_build_custom_plain_path(capsys, forge, tmp_path):
@@ -771,7 +772,7 @@ def test_build_defaults_level_from_config(capsys, forge, tmp_path):
     run(capsys, ["build", "--spec", spec, "--out", str(tmp_path / "b.html"), "--level", "45"], bforge)
     run(capsys, ["build", "--spec", spec, "--out", str(tmp_path / "c.html"), "--no-relevel"], bforge)
     assert [c["level"] for c in fake.calls] == [60, 45, None]
-    assert [c["title"] for c in fake.calls] == ["Borderlands 4 Loadout"] * 3
+    assert [c["title"] for c in fake.calls] == ["Break Free Loadout"] * 3
 
     cfg = Config.load(path=write_cfg(tmp_path, "[forge]\nlevel = 55\n"))
     bforge55, fake55 = fake_forge(forge, config=cfg)
@@ -821,7 +822,7 @@ def test_build_reports_warnings_everywhere(capsys, forge, tmp_path):
     assert summary["warnings"] == ["catalog is a bit stale", "level did not take"]
     assert summary["items"][0]["warnings"] == ["level did not take"]
     assert "warning: catalog is a bit stale" in err
-    assert "warning: Anarchy: level did not take" in err
+    assert "warning: %s: level did not take" % D.SHOTGUN_NAME in err
     assert "level did not take" in (tmp_path / "w.html").read_text(encoding="utf-8")
 
 
@@ -848,11 +849,11 @@ def test_build_bad_specs_are_clean_errors(capsys, forge, tmp_path, spec, needle)
 
 def test_build_warns_about_unknown_spec_keys(capsys, forge, tmp_path):
     bforge, fake = fake_forge(forge)
-    spec = [{"query": "anarchy", "elemnt": "cryo", "weaponType": "shotgun", "label_name": "Anarchy"}]
+    spec = [{"query": D.SHOTGUN_Q, "elemnt": "cryo", "weaponType": "shotgun", "label_name": D.SHOTGUN_NAME}]
     code, out, err = run(capsys, ["build", "--spec", json.dumps(spec), "--out", str(tmp_path / "k.html")], bforge)
     assert code == 0
     assert "warning: spec entry 1: ignoring unknown key(s): elemnt, weaponType" in err
-    assert fake.calls[0]["requests"][0].display_name == "Anarchy"       # legacy label_name still understood
+    assert fake.calls[0]["requests"][0].display_name == D.SHOTGUN_NAME       # legacy label_name still understood
 
 
 def test_build_unwritable_output_is_a_clean_error(capsys, forge, tmp_path):
@@ -912,17 +913,17 @@ def test_build_degraded_builder_warns_once(capsys, forge, tmp_path):
 
 README_EXAMPLES = {
     "cryo loadout": [
-        {"group": "Weapons", "type": "shotgun", "element": "cryo", "query": "anarchy"},
+        {"group": "Weapons", "type": "shotgun", "element": "cryo", "query": D.SHOTGUN_Q},
         {"group": "Weapons", "type": "sniper", "element": "cryo"},
-        {"group": "Gear", "query": "super soldier", "element": "cryo"},
+        {"group": "Gear", "query": D.GEAR_Q, "element": "cryo"},
         {"group": "Gear", "type": "classmod"},
         {"group": "Gear", "type": "repkit"},
         {"group": "Gear", "type": "grenade"},
     ],
     "wombo combo + plasma coil + cryo super soldier": [
-        {"group": "Weapons", "query": "wombo combo", "element": "cryo"},
-        {"group": "Weapons", "query": "plasma coil"},
-        {"group": "Gear", "query": "super soldier", "element": "cryo"},
+        {"group": "Weapons", "query": D.WOMBO_Q, "element": "cryo"},
+        {"group": "Weapons", "query": D.PLASMA_Q},
+        {"group": "Gear", "query": D.GEAR_Q, "element": "cryo"},
     ],
     "level 60 radiation shotgun": [
         {"type": "shotgun", "element": "radiation"},

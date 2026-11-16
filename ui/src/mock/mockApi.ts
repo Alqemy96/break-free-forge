@@ -27,6 +27,7 @@ import type {
   TransformResponse,
 } from '@/api/types'
 import raw from './fixtures.json'
+import { DEMO_COUNT, demoIdentify, demoPool, demoStats } from './demo'
 import { renderMockSheet, renderMockText } from './sheet'
 
 interface Fixtures {
@@ -41,6 +42,16 @@ interface Fixtures {
 }
 
 const fx = raw as unknown as Fixtures
+
+// The public tree ships no captured game data, so an empty fixture set is filled with the invented
+// demo catalog (./demo.ts) to keep mock mode usable. Captured fixtures, when present, win.
+if (fx.pool.length === 0) {
+  fx.pool = demoPool()
+  fx.identify = { ...demoIdentify(), ...fx.identify }
+  fx.stats = demoStats()
+  fx.meta.catalog_count = DEMO_COUNT
+  fx.meta.manifest_version = 'demo fixtures (fictional)'
+}
 
 type Scenario = 'sick' | 'degraded' | 'down' | null
 
@@ -92,7 +103,7 @@ function mutate(serial: string, salt: string): string {
 
 const clone = <T>(value: T): T => JSON.parse(JSON.stringify(value)) as T
 
-const UNOWNED_PACK = { pack: 'story_pack_1', label: 'Story Pack 1 - Mad Ellie and the Vault of the Damned' }
+const UNOWNED_PACK = { pack: 'expansion_pack_1', label: 'Expansion Pack 1 - The Locksmith Holiday (demo)' }
 const ELEMENT_PART_LABEL: Record<ElementId, string> = {
   cryo: 'Cryo',
   fire: 'Fire',
@@ -129,7 +140,7 @@ export function createMockApi(): Api {
 
   function lookup(serial: string): IdentifyResponse {
     const s = serial.trim()
-    if (!s.startsWith('@U')) throw new ApiError('serial_error', "not a Borderlands 4 serial: it must start with '@U'", 400)
+    if (!s.startsWith('@U')) throw new ApiError('serial_error', "not a serial: it must start with '@U'", 400)
     const hit = known.get(s)
     if (!hit) {
       throw new ApiError(
@@ -369,7 +380,7 @@ export function createMockApi(): Api {
         })
       }
     })
-    const loadout = { title: body.title || 'Borderlands 4 Loadout', level: body.level ?? null, groups, unmatched, warnings, items }
+    const loadout = { title: body.title || 'Break Free Loadout', level: body.level ?? null, groups, unmatched, warnings, items }
     return { loadout, html: renderMockSheet(loadout), text: renderMockText(loadout) }
   }
 

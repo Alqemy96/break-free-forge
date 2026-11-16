@@ -2,14 +2,14 @@
  "meta": {
   "version": "0.1.0.dev0",
   "level": 60,
-  "character": "gravitar",
+  "character": "locksmith",
   "owned_packs": [
    "coregame",
-   "bounty_pack_1",
-   "bounty_pack_2",
-   "bounty_pack_3",
-   "bounty_pack_4",
-   "bounty_pack_5"
+   "expansion_pack_1",
+   "expansion_pack_2",
+   "expansion_pack_3",
+   "expansion_pack_4",
+   "expansion_pack_5"
   ],
   "catalog_count": 0,
   "manifest_version": "none (supply your own data)",
@@ -49,10 +49,10 @@
    "Vile"
   ],
   "characters": [
-   "gravitar",
-   "dark_siren",
-   "exo_soldier",
-   "paladin"
+   "locksmith",
+   "cracker",
+   "tinkerer",
+   "courier"
   ],
   "types": [
    {
@@ -168,7 +168,7 @@
    {
     "name": "data",
     "state": "ok",
-    "detail": "483 categories, 161 part tables, 1222 part_meta entries, manifest version 2026-08-01 (post-v1.9, Bounty Pack 4)",
+    "detail": "483 categories, 161 part tables, 1222 part_meta entries, manifest version 2026-08-01 (demo)",
     "purpose": "Serve the game's manifest tables (categories, parts, rarity/pack meta, drops) as read-only lookups.",
     "requires": [],
     "contract_problems": [],
@@ -176,7 +176,7 @@
      {
       "name": "available",
       "ok": true,
-      "detail": "/sessions/rcw-01guchpfgpxhf2mxtmibxhq8/mnt/bl4-forge/data/manifest"
+      "detail": "data/manifest"
      },
      {
       "name": "category_names",
@@ -213,7 +213,7 @@
    {
     "name": "rules",
     "state": "ok",
-    "detail": "8 known-answer checks passed; owns bounty_pack_1, bounty_pack_2, bounty_pack_3, bounty_pack_4, bounty_pack_5, coregame",
+    "detail": "8 known-answer checks passed; owns expansion_pack_1, expansion_pack_2, expansion_pack_3, expansion_pack_4, expansion_pack_5, coregame",
     "purpose": "Decide what the player may hold (content-pack ownership) and whether a serial is structurally sound.",
     "requires": [
      "codec",
@@ -239,7 +239,7 @@
      {
       "name": "story-pack-1",
       "ok": true,
-      "detail": "Story Pack 1 serial -> (False, 'story_pack_1') (expected (False, 'story_pack_1'))"
+      "detail": "Expansion Pack 1 serial -> (False, 'expansion_pack_1') (expected (False, 'expansion_pack_1'))"
      },
      {
       "name": "ownership-per-part",
@@ -286,24 +286,24 @@
       "detail": "answers"
      },
      {
-      "name": "known-answer: weapon (Maliwan SMG, shock)",
+      "name": "known-answer: weapon (Ajar SMG, shock)",
       "ok": true,
-      "detail": "Legendary Plasma Coil, level 50"
+      "detail": "Legendary Demo Coil, level 50"
      },
      {
-      "name": "known-answer: shield (Ripper, no element)",
+      "name": "known-answer: shield (Hacksaw, no element)",
       "ok": true,
-      "detail": "Legendary Sparky Shield, level 50"
+      "detail": "Legendary Demo Shield, level 50"
      },
      {
-      "name": "known-answer: pearlescent (Order Sniper, comp_05_legendary_temper)",
+      "name": "known-answer: pearlescent (Lockpick Sniper, comp_05_legendary)",
       "ok": true,
-      "detail": "Pearl Solar Temper, level 50"
+      "detail": "Pearl Demo Temper, level 50"
      },
      {
       "name": "known-answer: pearlescent + legendary component (highest tier governs)",
       "ok": true,
-      "detail": "Pearl Solar Temper, level 50"
+      "detail": "Pearl Demo Temper, level 50"
      },
      {
       "name": "transforms",
@@ -333,7 +333,7 @@
      {
       "name": "known_query",
       "ok": true,
-      "detail": "'anarchy' shotgun -> 9 rows, known serial present"
+      "detail": "'unlatch' shotgun -> 9 rows, known serial present"
      },
      {
       "name": "type_aliases",
@@ -371,7 +371,7 @@
      {
       "name": "one_item_at_60",
       "ok": true,
-      "detail": "'anarchy' shotgun -> 1 item(s), level 60, Legendary Anarchy, 0 warning(s)"
+      "detail": "'unlatch' shotgun -> 1 item(s), level 60, Legendary Unlatch, 0 warning(s)"
      },
      {
       "name": "explicit_serial",

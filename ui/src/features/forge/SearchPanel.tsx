@@ -83,7 +83,7 @@ export function SearchPanel({
           ref={queryRef}
           value={form.query}
           onChange={(e) => update({ query: e.target.value }, false)}
-          placeholder="Name: anarchy, wombo combo..."
+          placeholder="Name: crowbar, skeleton key..."
           autoComplete="off"
           spellCheck={false}
           className="h-12 pr-10 pl-9 text-[17px]"
@@ -161,7 +161,7 @@ export function SearchPanel({
           </datalist>
         </Field>
         <Field
-          label="Vault hunter"
+          label="Character"
           htmlFor={`${ids}-char`}
           className={cn('col-span-2 sm:col-span-1 md:col-span-2 2xl:col-span-1', isClassMod && 'rounded-[3px] outline outline-1 outline-offset-4 outline-violet/60')}
           hint={isClassMod ? 'Class mods: pick a hunter to see only theirs.' : undefined}

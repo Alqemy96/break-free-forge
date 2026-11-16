@@ -47,7 +47,7 @@ export function HealthScreen() {
   return (
     <div className="flex min-h-full flex-col gap-5 p-4 lg:p-6">
       <h1 className="sr-only">Module health</h1>
-      <section className="panel flex flex-wrap items-end justify-between gap-4 p-5" aria-labelledby={`${ids}-h`}>
+      <section className="panel ink-edge flex flex-wrap items-end justify-between gap-4 p-5" aria-labelledby={`${ids}-h`}>
         <div>
           <SectionLabel>
             <span id={`${ids}-h`}>Health / the module mesh</span>
@@ -78,7 +78,7 @@ export function HealthScreen() {
       </section>
 
       {healthError && !health ? (
-        <ErrorState title="Health check failed" message={healthError.message} code={healthError.code} onRetry={() => void refresh()} />
+        <ErrorState title="Health check failed" message={healthError.message} code={healthError.code} onRetry={() => void refresh()} art="ai-ally" />
       ) : null}
 
       {!health && !healthError ? <Skeleton className="h-[420px] w-full" /> : null}
@@ -87,7 +87,7 @@ export function HealthScreen() {
 
       {health && modules.length ? (
         <div className="grid items-start gap-5 xl:grid-cols-[minmax(0,1fr)_340px]">
-          <div className="panel relative overflow-hidden p-2 pb-10">
+          <div className="panel ink-edge relative overflow-hidden p-2 pb-10">
             <MeshDiagram modules={modules} active={focus} onActive={setHover} onPin={(n) => setPinned((p) => (p === n ? null : n))} />
             <Legend />
           </div>

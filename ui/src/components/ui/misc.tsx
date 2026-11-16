@@ -27,13 +27,12 @@ export function Separator({ className, vertical = false }: { className?: string;
   )
 }
 
-/** "[ SECTION ]" telemetry heading */
+/** "// SECTION" terminal heading */
 export function SectionLabel({ children, className, as: Tag = 'h2' }: { children: ReactNode; className?: string; as?: 'h2' | 'h3' | 'p' }) {
   return (
-    <Tag className={cn('micro flex items-center gap-2 text-fg-dim', className)}>
-      <span aria-hidden className="text-hazard">[</span>
-      <span className="text-fg-muted">{children}</span>
-      <span aria-hidden className="text-hazard">]</span>
+    <Tag className={cn('flex items-center gap-2 font-display text-[15px] tracking-[0.08em] text-hazard uppercase', className)}>
+      <span aria-hidden className="text-danger">//</span>
+      <span>{children}</span>
     </Tag>
   )
 }

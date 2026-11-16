@@ -83,6 +83,20 @@ class DataModule(Module):
         """
         return self._cached("version", self._build_version, "unknown")
 
+    def is_synthetic(self) -> bool:
+        """True when the manifest is the bundled fictional demo set (its VERSION line starts 'SYNTHETIC')."""
+        return self.manifest_version().upper().startswith("SYNTHETIC")
+
+    def known_answers(self) -> Mapping[str, object]:
+        """Health-check known answers shipped WITH the synthetic dataset (`known_answers.json`).
+
+        Empty for any other manifest: the real-data known answers live in the modules themselves. Not in
+        DataPort; callers must treat it as optional (`getattr(data, "known_answers", None)`).
+        """
+        if not self.is_synthetic():
+            return _EMPTY
+        return self._cached("known_answers", self._build_known_answers, _EMPTY)
+
     # ---- lookups ------------------------------------------------------------------------------
     def category_names(self) -> Mapping[int, str]:
         """category_id -> human-readable category name."""
@@ -233,6 +247,12 @@ class DataModule(Module):
             raise ValueError("part_meta.json is not a JSON object")
         return freeze(data)
 
+    def _build_known_answers(self) -> Mapping[str, object]:
+        data = read_json(self._dir / "known_answers.json")
+        if not isinstance(data, dict):
+            raise ValueError("known_answers.json is not a JSON object")
+        return freeze(data)
+
     def _build_drops(self) -> Mapping[str, object]:
         data = read_json(self._dir / "drops.json")
         if not isinstance(data, dict):
@@ -261,9 +281,9 @@ class DataModule(Module):
 
     def _health(self) -> HealthReport:
         if not self.available():
-            msg = "manifest data not found at %s (no parts/ directory)" % self._dir
+            msg = "manifest data not found at %s/manifest (no parts/ directory)" % self.config.data_label
             return HealthReport.from_checks([HealthCheck("available", False, msg)], summary=msg)
-        checks = [HealthCheck("available", True, str(self._dir))]
+        checks = [HealthCheck("available", True, "%s/manifest" % self.config.data_label)]
         names = self.category_names()
         checks.append(HealthCheck("category_names", bool(names), "%d categories" % len(names)))
         scan = self._part_scan()

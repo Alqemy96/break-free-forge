@@ -24,7 +24,7 @@ from ...core.types import (
     CatalogEntry, HealthCheck, HealthReport, Loadout, LoadoutItem, LoadoutRequest, SearchQuery,
 )
 
-DEFAULT_TITLE = "Borderlands 4 Loadout"
+DEFAULT_TITLE = "Break Free Loadout"
 DEFAULT_ITEM_NAME = "Item"              # legacy name of an explicit-serial entry that gave none
 SEARCH_FIELDS = ("query", "type", "element", "manufacturer", "rarity", "character")
 
@@ -36,6 +36,12 @@ _NO_ELEMENT = ("", "n/a", "na", "-", _DASH)      # database spellings of "no ele
 _KNOWN_SERIAL = r"@Uge(J0Fme!K{9I5@RG/*Fs6^dF^+SzB{X<<U4k{EX7U~sh7HS*<"
 _KNOWN_SERIAL_60 = r"@Uge(J0FnkbU{9I5@RG/*Fs6^dF^+SzB{X<<U4k{EX7U~sh7HS*<"
 _MISS_QUERY = "zz-no-such-item-zz"
+_REAL_KNOWN = dict(serial=_KNOWN_SERIAL, serial_60=_KNOWN_SERIAL_60, query="anarchy", type="shotgun",
+                   name="Anarchy", element="impact")
+# The same probe for the bundled synthetic dataset (data/synthetic; tests check these match its
+# manifest/known_answers.json). SYNTHETIC - not game data.
+_SYNTHETIC_KNOWN = dict(serial='@UggM92027QHL>Ragw5UjB>Qlpo#-Pq100', serial_60='@UggM92022%!L>Ragw5UjB>Qlpo#-Pq100',
+                        query="open vault", type="shotgun", name="Open Vault", element="cryo")
 
 
 def _text(value) -> str:
@@ -253,6 +259,9 @@ class BuilderModule(Module):
     def health(self) -> HealthReport:
         """Known-answer checks (a one-item loadout at level 60, an explicit serial, a miss). Never raises."""
         checks: List[HealthCheck] = []
+        known = dict(_REAL_KNOWN)
+        if self.config.is_synthetic:      # the bundled fictional dataset has its own probe item
+            known = dict(_SYNTHETIC_KNOWN)
 
         def check(name: str, fn) -> None:
             try:
@@ -262,26 +271,26 @@ class BuilderModule(Module):
             checks.append(HealthCheck(name, bool(ok), detail))
 
         def one_item_at_60():
-            lo = self.build([LoadoutRequest(query="anarchy", type="shotgun", group="Probe")],
+            lo = self.build([LoadoutRequest(query=known["query"], type=known["type"], group="Probe")],
                             level=60, title="Health probe")
             it = lo.items[0] if len(lo.items) == 1 else None
-            ok = (it is not None and it.level == 60 and it.serial == _KNOWN_SERIAL_60
-                  and not it.warnings and it.legendary_name == "Anarchy" and it.element == "impact"
+            ok = (it is not None and it.level == 60 and it.serial == known["serial_60"]
+                  and not it.warnings and it.legendary_name == known["name"] and it.element == known["element"]
                   and lo.groups == ("Probe",) and not lo.unmatched)
-            return ok, ("'anarchy' shotgun -> %d item(s)%s" % (len(lo.items), "" if it is None else
+            return ok, ("'%s' %s -> %d item(s)%s" % (known["query"], known["type"], len(lo.items), "" if it is None else
                         ", level %s, %s %s, %d warning(s)" % (it.level, it.rarity, it.legendary_name,
                                                               len(it.warnings))))
 
         def explicit_serial():
-            lo = self.build([LoadoutRequest(serial=_KNOWN_SERIAL)], level=60)
+            lo = self.build([LoadoutRequest(serial=known["serial"])], level=60)
             it = lo.items[0] if len(lo.items) == 1 else None
-            return (it is not None and it.serial == _KNOWN_SERIAL_60 and it.level == 60
+            return (it is not None and it.serial == known["serial_60"] and it.level == 60
                     and not it.warnings), "explicit serial re-leveled to 60"
 
         def no_relevel_keeps_level():
-            lo = self.build([LoadoutRequest(serial=_KNOWN_SERIAL)])
+            lo = self.build([LoadoutRequest(serial=known["serial"])])
             it = lo.items[0] if len(lo.items) == 1 else None
-            return (it is not None and it.serial == _KNOWN_SERIAL and it.level == 50
+            return (it is not None and it.serial == known["serial"] and it.level == 50
                     and lo.level is None), "level=None leaves the stored level (50)"
 
         def miss_is_unmatched():

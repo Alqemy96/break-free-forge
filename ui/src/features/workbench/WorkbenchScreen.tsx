@@ -120,13 +120,13 @@ export function WorkbenchScreen() {
       </section>
 
       {identifyError && !identifying ? (
-        <ErrorState title="Could not identify" message={identifyError.message} code={identifyError.code} onRetry={run} />
+        <ErrorState title="Could not identify" message={identifyError.message} code={identifyError.code} onRetry={run} art="ai-ally" />
       ) : null}
 
       {identifying && !current ? <DossierSkeleton /> : null}
 
       {!current && !identifying && !identifyError ? (
-        <EmptyState icon={Wrench} title="Bench is empty">
+        <EmptyState icon={Wrench} title="Bench is empty" art="takeover">
           <p>
             Paste any serial to see what it really is: name, rarity, element, level, drop odds (base rates) and every part by
             position. Or press <span className="text-fg">Inspect</span> on a search result.
