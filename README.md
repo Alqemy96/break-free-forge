@@ -1,6 +1,19 @@
 # Break Free Forge
 
+![Break Free Forge: you bought it, you should be able to open it](docs/images/mockups/hero-banner.png)
+
+[![License: AGPL-3.0](https://img.shields.io/badge/license-AGPL--3.0-ffe03d?style=flat-square)](LICENSE)
+![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-35e8d4?style=flat-square)
+![Offline · local only](https://img.shields.io/badge/network-local%20only-ff3d8b?style=flat-square)
+
 *You bought it. You should be able to open it.*
+
+<p align="center">
+  <img src="docs/images/art/v4/collective.png" width="24%" alt="The collective">
+  <img src="docs/images/art/v4/unlocked.png" width="24%" alt="Unlocked">
+  <img src="docs/images/art/v4/ai-ally.png" width="24%" alt="AI ally">
+  <img src="docs/images/art/v4/takeover.png" width="24%" alt="Takeover">
+</p>
 
 ## Why
 
@@ -43,6 +56,18 @@ encode, re-level, and save editing once you have a key) work out of the box.
 
 Read `DISCLOSURE.md` for exactly what every command reads, writes, and whether it touches the network.
 (Short answer: it never makes an outbound connection; the web UI listens on `127.0.0.1` only.)
+
+## Screens
+
+These are the real local web UI (`python -m bl4forge serve`), running on the bundled fictional demo data.
+
+![Forge: search the catalog, every code checked against its bitstream](docs/images/screens/forge.png)
+
+| Workbench | Loadout tray |
+|---|---|
+| ![Workbench: inspect and modify one serial](docs/images/screens/workbench.png) | ![Loadout tray and code sheet](docs/images/screens/tray.png) |
+| **Health** | **Item icons** |
+| ![Health: every module's self-checks](docs/images/screens/health.png) | ![Original item icons](docs/images/screens/item-icons.png) |
 
 ## Status
 
