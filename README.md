@@ -31,6 +31,16 @@ planet in between. This project carries that idea off the screen.
 - **Honest about the limits.** What failed is written down next to what worked, because the next person can
   only push further from the truth.
 
+### How we got in
+
+A save sealed with a **fixed key** — one key, compiled into the game, the same for every copy — is not really
+sealed at all: the key is sitting in the game's own memory every time you play. You do not have to trace any
+code to find it. Dump the running game's memory (your copy), take one of your encrypted saves, and try every
+byte offset of the dump as a candidate key; the right one is the only one whose decrypt is a clean, complete
+zlib stream. A few minutes on an ordinary PC. One hit. **We publish the method, never the key** — your key comes
+from your game, on your hardware, found by you. This is the idea the whole project stands on; read
+**[docs/SCANNER.md](docs/SCANNER.md)**.
+
 Breaking free here means owning and modifying **your own copy, offline**. It does not mean piracy, cheating
 against other players, or getting around anyone's paid online services, and this project will not help with
 those.
@@ -116,6 +126,7 @@ Python 3.10 or newer (3.11+ has `tomllib`; 3.10 installs `tomli`). To edit a sav
 |---|---|
 | `docs/runbooks/USER.md` | get it running and edit a save safely, step by step |
 | `docs/runbooks/DEVELOPER.md` | architecture, adding a module, tests, the loot-pak builder, reusing the codec |
+| `docs/SCANNER.md` | how a fixed key is found (the idea the project stands on), and the scanner tool |
 | `docs/runbooks/RESEARCHER.md` | the save format, the loot-table findings, open questions |
 | `docs/ARCHITECTURE.md`, `docs/WEB_API.md` | the cell mesh and the local JSON API |
 | `DISCLOSURE.md` | what each command reads, writes, and contacts |
