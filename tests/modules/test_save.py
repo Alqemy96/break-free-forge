@@ -184,9 +184,28 @@ def test_ps5_block_aligned_save_without_pkcs7_padding_is_accepted(save):
     assert len(packed) % 16 == 0
     blob = _aes.ecb_encrypt(TEST_KEY, packed)                       # no padding, as the game writes it
     assert len(blob) == len(packed) and save.decrypt_ps5(blob) == y
-    assert save.decrypt_ps5(save.encrypt_ps5(y)) == y                # our own (padded) output still loads
+    assert save.decrypt_ps5(save.encrypt_ps5(y)) == y                # our own output still loads
     with pytest.raises(SaveError):                                   # unpadded but corrupt trailer still refused
         save.decrypt_ps5(_aes.ecb_encrypt(TEST_KEY, packed[:-4] + (len(y) + 1).to_bytes(4, "little")))
+
+
+def test_encrypt_writes_no_padding_when_payload_is_block_aligned():
+    y = _aligned_yaml().encode()
+    packed = zlib.compress(y, 9) + len(y).to_bytes(4, "little")
+    assert len(packed) % 16 == 0
+    blob = _container.encrypt(y, TEST_KEY, "ps5")
+    assert len(blob) == len(packed)                                  # mirrors the game's writer
+    assert _aes.ecb_decrypt(TEST_KEY, blob) == packed
+    assert _container.decrypt(blob, TEST_KEY, "ps5") == y
+
+
+def test_encrypt_pkcs7_pads_a_non_aligned_payload_to_the_next_boundary():
+    y = SYNTH.encode()
+    packed = zlib.compress(y, 9) + len(y).to_bytes(4, "little")
+    assert len(packed) % 16 != 0
+    blob = _container.encrypt(y, TEST_KEY, "ps5")
+    assert len(blob) == (len(packed) // 16 + 1) * 16
+    assert _aes.ecb_decrypt(TEST_KEY, blob) == _container.pkcs7_pad(packed)
 
 
 def test_corrupt_footer_is_detected(save):

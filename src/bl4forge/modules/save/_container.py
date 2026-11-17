@@ -79,7 +79,14 @@ def decrypt(data: bytes, key: bytes, platform: str) -> bytes:
 
 
 def encrypt(yaml: bytes, key: bytes, platform: str) -> bytes:
-    """YAML bytes -> encrypted save bytes."""
+    """YAML bytes -> encrypted save bytes, padded the way the game's writer pads.
+
+    The game writes NO PKCS7 padding when zlib+footer is already a multiple of 16 (proven on PS5,
+    docs/runbooks/RESEARCHER.md), so encrypt does the same; otherwise it PKCS7-pads to the next boundary.
+    UNVERIFIED: whether the game's loader would also ACCEPT a padded block-aligned save (the form this
+    function produced before) - that needs a real console test nobody has run. Also UNVERIFIED: that the
+    PC writer omits padding the same way (only PS5 was observed); PC uses the same rule here.
+    """
     packed = zlib.compress(bytes(yaml), ZLIB_LEVEL)
     if platform == "ps5":
         packed += struct.pack("<I", len(yaml) & 0xFFFFFFFF)
@@ -87,6 +94,8 @@ def encrypt(yaml: bytes, key: bytes, platform: str) -> bytes:
         packed += struct.pack("<II", zlib.adler32(yaml), len(yaml) & 0xFFFFFFFF)
     else:
         raise SaveError("unknown platform %r" % platform)
+    if len(packed) % 16 == 0:
+        return ecb_encrypt(key, packed)
     return ecb_encrypt(key, pkcs7_pad(packed))
 
 
